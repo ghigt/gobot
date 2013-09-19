@@ -1,1 +1,1 @@
-__author__ = 'Nkio'
+__author__ = 'Alexandre Cloquet'
