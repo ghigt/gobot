@@ -32,9 +32,3 @@ class Show(Base):
     status = Column(String)
     language = Column(String)
     Episodes = relationship('Episode')
-
-
-class Child(Base):
-    __tablename__ = 'child'
-    id = Column(Integer, primary_key=True)
-    parent_id = Column(Integer, ForeignKey('parent.id'))
