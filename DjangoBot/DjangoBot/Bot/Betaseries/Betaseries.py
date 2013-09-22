@@ -2,15 +2,19 @@
 
 
 __author__ = 'Alexandre Cloquet'
+__credits__ = ["Alexandre Cloquet"]
+__version__ = "0.1"
+__maintainer__ = "Alexandre Cloquet"
+__email__ = "Alexandre.cloquet@gmail.com"
+__status__ = "Development"
 
 import settings
 import logging
 import logging.config
-import requests
 
 from Connexion import Connexion
-from Betaseries.ObjectDeserialised.Show import Show
-from Betaseries.ObjectDeserialised.Episode import Episode
+from ObjectDeserialised.Show import Show
+from ObjectDeserialised.Episode import Episode
 
 
 class Betaseries:
@@ -20,7 +24,6 @@ class Betaseries:
     def __init__(self):
         init = None
         self.listURL = self.getInfoForEachEpisode()
-
 
     def __del__(self):
         init = None

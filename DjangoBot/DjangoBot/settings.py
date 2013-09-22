@@ -1,4 +1,4 @@
-# Django settings for Admin project.
+# Django settings for DjangoBot project.
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -83,7 +83,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'enquvu2t^pozae1n)9e+0@(qi2bnfzn96in@7$ruy1f6p+c$z_'
+SECRET_KEY = '((m$t(!)^z63e5i+0zh3e3g#1)sin)!b!gz_i1ri*6=(cgklw4'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -102,10 +102,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'Admin.urls'
+ROOT_URLCONF = 'DjangoBot.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'Admin.wsgi.application'
+WSGI_APPLICATION = 'DjangoBot.wsgi.application'
 
 import os
 TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), '..', 'templates').replace('\\','/'),)
@@ -121,7 +121,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'AdminWeb',
+    'AdminBot',
 )
 
 # A sample logging configuration. The only tangible logging
