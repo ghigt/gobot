@@ -5,8 +5,8 @@ __maintainer__ = "Alexandre Cloquet"
 __email__ = "Alexandre.cloquet@gmail.com"
 __status__ = "Development"
 
-from sqlalchemy import Table, Column, Integer, ForeignKey, String
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()

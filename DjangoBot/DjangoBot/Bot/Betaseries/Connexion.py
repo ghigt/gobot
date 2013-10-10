@@ -18,10 +18,8 @@ class Connexion:
 
     def __init__(self, httpType='http'):
         self.httpType = httpType
-        init = None
 
     def getAllShow(self):
-        listp = []
         if self.httpType == 'http':
             settings.HTTP = 'http'
         else:
@@ -68,4 +66,3 @@ class Connexion:
         else:
             self.log.error("Connexion à BetaSeries : Status de la page = %d" % r.status_code)
             return False
-
