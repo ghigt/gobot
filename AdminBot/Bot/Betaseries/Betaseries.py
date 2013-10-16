@@ -32,7 +32,7 @@ class Betaseries:
     log = logging.getLogger("BetaSeries")
 
     def __init__(self):
-        self.listURL = self.getInfoForEachShow()
+        self.listURL = self.getInfoForEachEpisode()
 
     def __del__(self):
         None
@@ -107,7 +107,6 @@ class Betaseries:
                 x = Show.objects.get(title=obj['title'], creation=obj['creation'])
             except Show.DoesNotExist:
                 p.save()
-                a.start()
                 self.log.info("Objet Save")
             else:
                 p = Show(id=x.id,
@@ -135,6 +134,7 @@ class Betaseries:
     def deserialaseEpisode(self, objs):
         listEpisode = list()
         for obj in objs:
+            show = Show.objects.get(title=obj['show_title'])
             ep = Episode(title=obj['title'],
                          season=obj['season'],
                          episode=obj['episode'],
@@ -143,6 +143,7 @@ class Betaseries:
                          code=obj['code'],
                          description=obj['description'],
                          date=obj['date'])
+            ep.show_id = show.id
             ep.save()
             listEpisode.append(ep)
         return listEpisode
