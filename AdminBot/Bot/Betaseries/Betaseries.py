@@ -10,20 +10,17 @@ __status__ = "Development"
 import logging
 import re
 import logging.config
-
-import sys, threading
+import sys
+import threading
 import os
-from datetime import *
-sys.path.append('/home/nkio/PycharmProjects/DjangoBot/AdminBot/')
-os.environ['DJANGO_SETTINGS_MODULE'] = 'DjangoBot.settings'
-
 from django.core.management import setup_environ
 import settings
 
+sys.path.append('/home/nkio/PycharmProjects/DjangoBot/AdminBot/')
+os.environ['DJANGO_SETTINGS_MODULE'] = 'DjangoBot.settings'
+
 setup_environ(settings)
 from Connexion import Connexion
-from django.conf import settings
-from django.db import models
 from AdminBot.models import Episode, Show
 
 
@@ -32,58 +29,59 @@ class Betaseries:
     log = logging.getLogger("BetaSeries")
 
     def __init__(self):
-        self.listURL = self.getInfoForEachEpisode()
+        self.list_url = self.get_info_for_each_episode()
 
     def __del__(self):
         None
 
-    def get_API_key(self):
+    @staticmethod
+    def get_api_key():
         return settings.API_KEY_BETASERIE
 
     def get_logger(self):
         return self.log
 
-    def getUrlForEachSerie(self):
+    def get_url_for_each_serie(self):
         """
         Permet d'avoir toute les URL des series
         :return List() url:
         """
-        listUrl = []
-        self.list = Connexion('http').getAllShow()
-        for clef in self.list.values():
-            listUrl.append(clef['url'])
+        listurl = []
+        listtmp = Connexion('http').getAllShow()
+        for clef in listtmp.values():
+            listurl.append(clef['url'])
         self.log.info("Récupération des URL fini")
-        return listUrl
+        return listurl
 
-    def getIDForEachShow(self):
+    def get_id_for_each_show(self):
         """
         Permet d'avoir tout les ID des series
         :return List() ID:
         """
         listid = []
-        self.list = Connexion('http').getAllShow()
-        for clef in self.list:
+        listtmp = Connexion('http').getAllShow()
+        for clef in listtmp:
             listid.append(clef)
         self.log.info("Récupération des iD fini")
         return listid
 
-    def getInfoForEachShow(self):
-        ids = self.getIDForEachShow()
+    def get_info_for_each_show(self):
+        ids = self.get_id_for_each_show()
         for idShow in ids:
             show = Connexion('http').getEachShow(idShow)
             if show != False:
-                p = self.deserialaseShow(show)
+                self.deserialase_show(show)
                 self.log.info("Création d'un show")
 
-    def getInfoForEachEpisode(self):
-        ids = self.getIDForEachShow()
+    def get_info_for_each_episode(self):
+        ids = self.get_id_for_each_show()
         for idShow in ids:
             episode = Connexion('http').getEpisodeFromIDShow(idShow)
             if episode != False:
-                self.deserialaseEpisode(episode)
+                self.deserialase_episode(episode)
                 self.log.info("Création des épisode pour la série %s" % str(idShow))
 
-    def deserialaseShow(self, obj):
+    def deserialase_show(self, obj):
         if 'show' in obj:
             obj = obj['show']
             if len(obj['genres']) == 0:
@@ -131,8 +129,9 @@ class Betaseries:
         else:
             self.log.error("Erreur à la déserialisation")
 
-    def deserialaseEpisode(self, objs):
-        listEpisode = list()
+    @staticmethod
+    def deserialase_episode(objs):
+        list_episode = list()
         for obj in objs:
             show = Show.objects.get(title=obj['show_title'])
             ep = Episode(title=obj['title'],
@@ -144,8 +143,11 @@ class Betaseries:
                          description=obj['description'],
                          date=obj['date'])
             ep.show_id = show.id
-            ep.save()
-            listEpisode.append(ep)
-        return listEpisode
+            try:
+                x = Episode.objects.get(title=obj['title'])
+            except Episode.DoesNotExist:
+                ep.save()
+            list_episode.append(ep)
+        return list_episode
 
 Betaseries()
