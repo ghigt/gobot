@@ -1,9 +1,9 @@
 #!/bin/bash
-echo "sudo apt-get install python-pip python-dev build-essential"
+echo "sudo apt-get install python-pip python-dev build-essential libmysqlclient-dev"
 echo
 echo
 echo
-sudo apt-get install python-pip python-dev build-essential
+sudo apt-get install python-pip python-dev build-essential libmysqlclient-dev
 echo
 echo
 echo
@@ -31,8 +31,8 @@ sudo pip install Django
 echo
 echo
 echo
-echo "sudo pip install Django"
+echo "sudo pip install MySQL-python"
 echo
 echo
 echo
-python manage.py runserver
+sudo pip install MySQL-python
