@@ -1,4 +1,0 @@
-recursive-include turbobots/public *
-include turbobots/public/favicon.ico
-recursive-include turbobots/i18n *
-recursive-include turbobots/templates *
