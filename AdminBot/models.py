@@ -22,21 +22,30 @@ class Show(models.Model):
     status = models.CharField(max_length=50)
     language = models.CharField(max_length=20)
 
+    def __unicode__(self):
+        return self.title
+
 
 class Episode(models.Model):
     title = models.CharField(max_length=200)
     season = models.PositiveSmallIntegerField()
     episode = models.PositiveSmallIntegerField()
     showid = models.PositiveIntegerField()
-    show_title = models.IntegerField()
-    code = models.IntegerField()
+    show_title = models.CharField(max_length=200)
+    code = models.CharField(max_length=10)
     description = models.TextField()
     date = models.DateField()
     show = models.ForeignKey(Show)
 
+    def __unicode__(self):
+        return self.title
+
 
 class Genre(models.Model):
     type_genre = models.CharField(max_length=26)
+
+    def __unicode__(self):
+        return self.type_genre
 
 
 class GenreToShow(models.Model):
