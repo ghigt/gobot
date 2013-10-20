@@ -16,7 +16,10 @@ import os
 from django.core.management import setup_environ
 import settings
 
+#For Alexandre
 sys.path.append('/home/nkio/PycharmProjects/DjangoBot/AdminBot/')
+#For serveur
+#sys.path.append(os.path.join(os.path.abspath('..'), '../../'))
 os.environ['DJANGO_SETTINGS_MODULE'] = 'DjangoBot.settings'
 
 setup_environ(settings)
@@ -31,13 +34,11 @@ class Betaseries:
     def __init__(self):
         self.list_url = self.get_info_for_each_episode()
 
-    def __del__(self):
-        None
-
     @staticmethod
     def get_api_key():
         return settings.API_KEY_BETASERIE
 
+    @staticmethod
     def get_logger(self):
         return self.log
 
@@ -66,6 +67,10 @@ class Betaseries:
         return listid
 
     def get_info_for_each_show(self):
+        """
+        Lit le Json reçu des show
+        et créer un objet qui est ensuite stocké en base
+        """
         ids = self.get_id_for_each_show()
         for idShow in ids:
             show = Connexion('http').getEachShow(idShow)
@@ -74,6 +79,10 @@ class Betaseries:
                 self.log.info("Création d'un show")
 
     def get_info_for_each_episode(self):
+        """
+        Lit le Json reçu des episodes
+        et créer un objet qui est ensuite stocké en base
+        """
         ids = self.get_id_for_each_show()
         for idShow in ids:
             episode = Connexion('http').getEpisodeFromIDShow(idShow)
@@ -81,6 +90,7 @@ class Betaseries:
                 self.deserialase_episode(episode)
                 self.log.info("Création des épisode pour la série %s" % str(idShow))
 
+    @staticmethod
     def deserialase_show(self, obj):
         if 'show' in obj:
             obj = obj['show']
@@ -100,12 +110,13 @@ class Betaseries:
                      genre=obj['genres'][0],
                      lenght=obj['length'],
                      status=obj['status'],
-                     language=obj['language'])
+                     language=obj['language'],
+                     idbetaserie=obj['id'])
             try:
                 x = Show.objects.get(title=obj['title'], creation=obj['creation'])
             except Show.DoesNotExist:
                 p.save()
-                self.log.info("Objet Save")
+                self.log.info("Show Save")
             else:
                 p = Show(id=x.id,
                          thetvdb_id=obj['thetvdb_id'],
@@ -122,18 +133,25 @@ class Betaseries:
                          genre=obj['genres'][0],
                          lenght=obj['length'],
                          status=obj['status'],
-                         language=obj['language'])
+                         language=obj['language'],
+                         idbetaserie=obj['id'])
                 p.save()
-                self.log.info("Objet Update")
+                self.log.info("Show Update")
             return p
         else:
             self.log.error("Erreur à la déserialisation")
 
     @staticmethod
-    def deserialase_episode(objs):
+    def deserialase_episode(self, objs):
         list_episode = list()
+        show = None
         for obj in objs:
-            show = Show.objects.get(title=obj['show_title'])
+            try:
+                show = Show.objects.get(title=obj['show_title'], idbetaserie=obj['show_id'])
+            except Show.DoesNotExist:
+                self.deserialase_show(Connexion('http').getEachShow(obj['show_id']))
+            else:
+                show = Show.objects.get(title=obj['show_title'], idbetaserie=obj['show_id'])
             ep = Episode(title=obj['title'],
                          season=obj['season'],
                          episode=obj['episode'],
@@ -144,9 +162,24 @@ class Betaseries:
                          date=obj['date'])
             ep.show_id = show.id
             try:
-                x = Episode.objects.get(title=obj['title'])
+                x = Episode.objects.get(title=obj['title'], show_title=obj['show_title'])
             except Episode.DoesNotExist:
                 ep.save()
+                self.log.info("Episode Save")
+            else:
+                ep = Episode(id=x.id,
+                             title=obj['title'],
+                             season=obj['season'],
+                             episode=obj['episode'],
+                             showid=obj['show_id'],
+                             show_title=obj['show_title'],
+                             code=obj['code'],
+                             description=obj['description'],
+                             date=obj['date'])
+                ep.show_id = show.id
+                ep.save()
+                self.log.info("Episode Update")
+
             list_episode.append(ep)
         return list_episode
 
