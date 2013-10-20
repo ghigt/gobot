@@ -23,6 +23,14 @@ sudo pip install --upgrade pip
 echo
 echo
 echo
+echo "sudo easy_install -U "
+echo
+echo
+echo
+
+echo
+echo
+echo
 echo "sudo pip install Django"
 echo
 echo

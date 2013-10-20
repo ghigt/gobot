@@ -10,8 +10,8 @@ class Show(models.Model):
     imdb_id = models.IntegerField(null=True)
     title = models.CharField(max_length=200)
     description = models.TextField()
-    seasons = models.PositiveSmallIntegerField()
-    nbepisode = models.PositiveSmallIntegerField()
+    seasons = models.PositiveIntegerField()
+    nbepisode = models.PositiveIntegerField()
     follower = models.PositiveIntegerField()
     comment = models.CharField(max_length=500)
     similars = models.CharField(max_length=200)
@@ -21,6 +21,7 @@ class Show(models.Model):
     lenght = models.PositiveIntegerField()
     status = models.CharField(max_length=50)
     language = models.CharField(max_length=20)
+    idbetaserie = models.IntegerField(null=True)
 
     def __unicode__(self):
         return self.title
@@ -29,10 +30,10 @@ class Show(models.Model):
 class Episode(models.Model):
     title = models.CharField(max_length=200)
     season = models.PositiveSmallIntegerField()
-    episode = models.PositiveSmallIntegerField()
+    episode = models.PositiveIntegerField()
     showid = models.PositiveIntegerField()
     show_title = models.CharField(max_length=200)
-    code = models.CharField(max_length=10)
+    code = models.CharField(max_length=20)
     description = models.TextField()
     date = models.DateField()
     show = models.ForeignKey(Show)

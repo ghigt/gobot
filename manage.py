@@ -9,7 +9,11 @@ if __name__ == "__main__":
     from django.core import management
 
     os.system('mysql --user=root --password=root -e"DROP DATABASE IF EXISTS testbot"')
-    os.system('mysql --user=root --password=root -e"CREATE DATABASE testbot"')
+    os.system('mysql --user=root --password=root -e"CREATE DATABASE testbot CHARACTER SET utf8"')
+
+    # For server
+    #os.system('mysql --user=root --password=bjtu2013sylimysql -e"DROP DATABASE IF EXISTS testbot"')
+    #os.system('mysql --user=root --password=bjtu2013sylimysql -e"CREATE DATABASE testbot CHARACTER SET utf8"')
     # Run the syncdb
     management.call_command('syncdb', interactive=False)
 
