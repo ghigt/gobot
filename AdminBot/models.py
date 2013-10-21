@@ -39,7 +39,7 @@ class Episode(models.Model):
     show = models.ForeignKey(Show)
 
     def __unicode__(self):
-        return self.title
+        return u'%s - %s' % (self.show_title, self.title)
 
 
 class Genre(models.Model):

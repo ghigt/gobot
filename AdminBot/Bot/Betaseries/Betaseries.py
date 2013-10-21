@@ -143,7 +143,6 @@ class Betaseries:
 
     @staticmethod
     def deserialase_episode(self, objs):
-        list_episode = list()
         show = None
         for obj in objs:
             try:
@@ -179,8 +178,5 @@ class Betaseries:
                 ep.show_id = show.id
                 ep.save()
                 self.log.info("Episode Update")
-
-            list_episode.append(ep)
-        return list_episode
 
 Betaseries()
