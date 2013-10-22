@@ -16,17 +16,17 @@ class Connexion:
     log = logging.getLogger("BetaSeries")
     header = {'Accept': 'application/json', 'user-agent': settings.NAMEPROJECT}
 
-    def __init__(self, httpType='http'):
-        self.httpType = httpType
+    def __init__(self, http_type='http'):
+        self.http_type = http_type
 
-    def getAllShow(self):
-        if self.httpType == 'http':
+    def get_all_show(self):
+        if self.http_type == 'http':
             settings.HTTP = 'http'
         else:
             settings.HTTP = 'https'
         adress = '%s://api.betaseries.com/shows/display/all.json?key=%s' % (settings.HTTP, settings.API_KEY_BETASERIE)
         r = requests.get(adress, headers=self.header)
-        self.log.info("Adresse interrogeée = %s" % adress)
+        self.log.info("Adresse interrogée = %s" % adress)
         if r.status_code == requests.codes.ok:
             self.log.info("Connexion à BetaSeries : Status de la page = %d" % r.status_code)
             return r.json()['root']['shows']
@@ -35,18 +35,18 @@ class Connexion:
             r.raise_for_status()
             return False
 
-    def getEachShow(self, idShow):
-        json = None
-        if self.httpType == 'http':
+    def get_each_show(self, id_show):
+        if self.http_type == 'http':
             settings.HTTP = 'http'
         else:
             settings.HTTP = 'https'
-        adress = '%s://api.betaseries.com/shows/display?key=%s&id=%s' % (settings.HTTP, settings.API_KEY_BETASERIE, idShow)
+        adress = '%s://api.betaseries.com/shows/display?key=%s&id=%s' %\
+                 (settings.HTTP, settings.API_KEY_BETASERIE, id_show)
         r = requests.get(adress, headers=self.header)
-        self.log.info("Adresse interrogeée = %s" % str(adress))
+        self.log.info("Adresse interrogée = %s" % str(adress))
         if r.status_code == requests.codes.ok:
             self.log.info("Connexion à BetaSeries : Status de la page = %d" % r.status_code)
-            self.log.info("Récupération de la série  = %s" % str(idShow))
+            self.log.info("Récupération de la série  = %s" % str(id_show))
             try:
                 r.json()
             except ValueError:
@@ -58,17 +58,18 @@ class Connexion:
             self.log.error("Connexion à BetaSeries : Status de la page = %d" % r.status_code)
             return False
 
-    def getEpisodeFromIDShow(self, idShow):
-        if self.httpType == 'http':
+    def get_episode_from_id_show(self, id_show):
+        if self.http_type == 'http':
             settings.HTTP = 'http'
         else:
             settings.HTTP = 'https'
-        adress = '%s://api.betaseries.com/shows/episodes?key=%s&id=%s' % (settings.HTTP, settings.API_KEY_BETASERIE, idShow)
+        adress = '%s://api.betaseries.com/shows/episodes?key=%s&id=%s' %\
+                 (settings.HTTP, settings.API_KEY_BETASERIE, id_show)
         r = requests.get(adress, headers=self.header)
-        self.log.info("Adresse interrogeée = %s" % str(adress))
+        self.log.info("Adresse interrogée = %s" % str(adress))
         if r.status_code == requests.codes.ok:
             self.log.info("Connexion à BetaSeries : Status de la page = %d" % r.status_code)
-            self.log.info("Récupération des épisodes de la série  = %s" % str(idShow))
+            self.log.info("Récupération des épisodes de la série  = %s" % str(id_show))
             try:
                 r.json()['episodes']
             except ValueError:

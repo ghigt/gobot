@@ -57,7 +57,7 @@ class Betaseries:
         @return: List(url) for every series
         """
         list_url = []
-        list_tmp = Connexion('http').getAllShow()
+        list_tmp = Connexion('http').get_all_show()
         for clef in list_tmp.values():
             list_url.append(clef['url'])
         self.log.info("Récupération des URL fini")
@@ -69,7 +69,7 @@ class Betaseries:
         @return: List(id) for every series
         """
         list_id = []
-        list_tmp = Connexion('http').getAllShow()
+        list_tmp = Connexion('http').get_all_show()
         for clef in list_tmp:
             list_id.append(clef)
         self.log.info("Récupération des iD fini")
@@ -82,7 +82,7 @@ class Betaseries:
         """
         ids = self.get_id_for_each_show()
         for idShow in ids:
-            show = Connexion('http').getEachShow(idShow)
+            show = Connexion('http').get_each_show(idShow)
             if show != False:
                 self.deserialase_show(show)
                 self.log.info("Création d'un show")
@@ -94,7 +94,7 @@ class Betaseries:
         """
         ids = self.get_id_for_each_show()
         for idShow in ids:
-            episode = Connexion('http').getEpisodeFromIDShow(idShow)
+            episode = Connexion('http').get_episode_from_id_show(idShow)
             if episode != False:
                 self.deserialase_episode(episode)
                 self.log.info("Création des épisode pour la série %s" % str(idShow))
@@ -168,7 +168,7 @@ class Betaseries:
             try:
                 show = Show.objects.get(title=obj['show_title'], idbetaserie=obj['show_id'])
             except Show.DoesNotExist:
-                self.deserialase_show(Connexion('http').getEachShow(obj['show_id']))
+                self.deserialase_show(Connexion('http').get_each_show(obj['show_id']))
             else:
                 show = Show.objects.get(title=obj['show_title'], idbetaserie=obj['show_id'])
             ep = Episode(title=obj['title'],
