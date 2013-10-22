@@ -36,6 +36,7 @@ class Connexion:
             return False
 
     def getEachShow(self, idShow):
+        json = None
         if self.httpType == 'http':
             settings.HTTP = 'http'
         else:
@@ -46,7 +47,13 @@ class Connexion:
         if r.status_code == requests.codes.ok:
             self.log.info("Connexion à BetaSeries : Status de la page = %d" % r.status_code)
             self.log.info("Récupération de la série  = %s" % str(idShow))
-            return r.json()
+            try:
+                r.json()
+            except ValueError:
+                self.log.error("Erreur sur le décodage du jSon, pass error")
+                pass
+            else:
+                return r.json()
         else:
             self.log.error("Connexion à BetaSeries : Status de la page = %d" % r.status_code)
             return False
@@ -62,7 +69,13 @@ class Connexion:
         if r.status_code == requests.codes.ok:
             self.log.info("Connexion à BetaSeries : Status de la page = %d" % r.status_code)
             self.log.info("Récupération des épisodes de la série  = %s" % str(idShow))
-            return r.json()['episodes']
+            try:
+                r.json()['episodes']
+            except ValueError:
+                self.log.error("Erreur sur le décodage du jSon, pass error")
+                pass
+            else:
+                return r.json()['episodes']
         else:
             self.log.error("Connexion à BetaSeries : Status de la page = %d" % r.status_code)
             return False
