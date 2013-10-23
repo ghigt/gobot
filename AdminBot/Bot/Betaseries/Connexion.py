@@ -10,23 +10,25 @@ __status__ = "Development"
 import settings
 import logging
 import requests
+from AdminBot.Bot.Adress.AdressBetaSeries import AdressBetaseries
 
 
 class Connexion:
+    access_url = ((0, '://api.betaseries.com/shows/display/all.json?key='),
+                  (1, '://api.betaseries.com/shows/display?key='),
+                  (2, '://api.betaseries.com/shows/episodes?key=%s&id=%s'))
+
     log = logging.getLogger("BetaSeries")
     header = {'Accept': 'application/json', 'user-agent': settings.NAMEPROJECT}
 
-    def __init__(self, httpType='http'):
-        self.httpType = httpType
+    def __init__(self, http_type='http'):
+        self.http_type = http_type
+        self.adress = AdressBetaseries(http_type, settings.API_KEY_BETASERIE)
 
-    def getAllShow(self):
-        if self.httpType == 'http':
-            settings.HTTP = 'http'
-        else:
-            settings.HTTP = 'https'
-        adress = '%s://api.betaseries.com/shows/display/all.json?key=%s' % (settings.HTTP, settings.API_KEY_BETASERIE)
-        r = requests.get(adress, headers=self.header)
-        self.log.info("Adresse interrogeée = %s" % adress)
+    def get_all_show(self):
+        self.adress.set_adress(self.access_url[0][1])
+        r = requests.get(self.adress.get_new_address(), headers=self.header)
+        self.log.info("Adresse interrogée = %s" % self.adress.get_new_address())
         if r.status_code == requests.codes.ok:
             self.log.info("Connexion à BetaSeries : Status de la page = %d" % r.status_code)
             return r.json()['root']['shows']
@@ -35,18 +37,14 @@ class Connexion:
             r.raise_for_status()
             return False
 
-    def getEachShow(self, idShow):
-        json = None
-        if self.httpType == 'http':
-            settings.HTTP = 'http'
-        else:
-            settings.HTTP = 'https'
-        adress = '%s://api.betaseries.com/shows/display?key=%s&id=%s' % (settings.HTTP, settings.API_KEY_BETASERIE, idShow)
-        r = requests.get(adress, headers=self.header)
-        self.log.info("Adresse interrogeée = %s" % str(adress))
+    def get_each_show(self, id_show):
+        self.adress.set_adress(self.access_url[1][1])
+        print self.adress.get_new_address() + "&id=%s" % id_show
+        r = requests.get(self.adress.get_new_address() + "&id=%s" % id_show, headers=self.header)
+        self.log.info("Adresse interrogée = %s" % str(self.adress.get_new_address() + "&id=%s" % id_show))
         if r.status_code == requests.codes.ok:
             self.log.info("Connexion à BetaSeries : Status de la page = %d" % r.status_code)
-            self.log.info("Récupération de la série  = %s" % str(idShow))
+            self.log.info("Récupération de la série  = %s" % str(id_show))
             try:
                 r.json()
             except ValueError:
@@ -58,17 +56,13 @@ class Connexion:
             self.log.error("Connexion à BetaSeries : Status de la page = %d" % r.status_code)
             return False
 
-    def getEpisodeFromIDShow(self, idShow):
-        if self.httpType == 'http':
-            settings.HTTP = 'http'
-        else:
-            settings.HTTP = 'https'
-        adress = '%s://api.betaseries.com/shows/episodes?key=%s&id=%s' % (settings.HTTP, settings.API_KEY_BETASERIE, idShow)
-        r = requests.get(adress, headers=self.header)
-        self.log.info("Adresse interrogeée = %s" % str(adress))
+    def get_episode_from_id_show(self, id_show):
+        self.adress.set_adress(self.access_url[2][1])
+        r = requests.get(self.adress.get_new_address() + "&id=%s" % id_show, headers=self.header)
+        self.log.info("Adresse interrogée = %s" % str(self.adress.get_new_address() + "&id=%s" % id_show))
         if r.status_code == requests.codes.ok:
             self.log.info("Connexion à BetaSeries : Status de la page = %d" % r.status_code)
-            self.log.info("Récupération des épisodes de la série  = %s" % str(idShow))
+            self.log.info("Récupération des épisodes de la série  = %s" % str(id_show))
             try:
                 r.json()['episodes']
             except ValueError:
@@ -79,3 +73,5 @@ class Connexion:
         else:
             self.log.error("Connexion à BetaSeries : Status de la page = %d" % r.status_code)
             return False
+
+Connexion().get_each_show("222")

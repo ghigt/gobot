@@ -11,14 +11,13 @@ import logging
 import re
 import logging.config
 import sys
-import threading
 import os
 from django.core.management import setup_environ
 import settings
 
 #For Alexandre
 sys.path.append('/home/nkio/PycharmProjects/DjangoBot/AdminBot/')
-#For serveur
+#For server
 #sys.path.append(os.path.join(os.path.abspath('..'), '../../'))
 os.environ['DJANGO_SETTINGS_MODULE'] = 'DjangoBot.settings'
 
@@ -32,66 +31,82 @@ class Betaseries:
     log = logging.getLogger("BetaSeries")
 
     def __init__(self):
-        self.list_url = self.get_info_for_each_episode()
+        self.get_info_for_each_episode()
 
     @staticmethod
     def get_api_key():
+        """
+        Static Method
+        Allows to have API key for Betaserie API
+        @return: str() with API key
+        """
         return settings.API_KEY_BETASERIE
 
     @staticmethod
     def get_logger(self):
+        """
+        Static Method
+        Allows to have the logger for Betaserie API
+        @return: Logger
+        """
         return self.log
 
-    def get_url_for_each_serie(self):
+    def get_url_for_each_series(self):
         """
-        Permet d'avoir toute les URL des series
-        :return List() url:
+        Allows to have all url series for Betaserie API
+        @return: List(url) for every series
         """
-        listurl = []
-        listtmp = Connexion('http').getAllShow()
-        for clef in listtmp.values():
-            listurl.append(clef['url'])
+        list_url = []
+        list_tmp = Connexion('http').get_all_show()
+        for clef in list_tmp.values():
+            list_url.append(clef['url'])
         self.log.info("Récupération des URL fini")
-        return listurl
+        return list_url
 
     def get_id_for_each_show(self):
         """
-        Permet d'avoir tout les ID des series
-        :return List() ID:
+        Allows to have all id series for Betaserie API
+        @return: List(id) for every series
         """
-        listid = []
-        listtmp = Connexion('http').getAllShow()
-        for clef in listtmp:
-            listid.append(clef)
+        list_id = []
+        list_tmp = Connexion('http').get_all_show()
+        for clef in list_tmp:
+            list_id.append(clef)
         self.log.info("Récupération des iD fini")
-        return listid
+        return list_id
 
     def get_info_for_each_show(self):
         """
-        Lit le Json reçu des show
-        et créer un objet qui est ensuite stocké en base
+        Get the Json file from series, and
+        make an object for ORM Django
         """
         ids = self.get_id_for_each_show()
         for idShow in ids:
-            show = Connexion('http').getEachShow(idShow)
+            show = Connexion('http').get_each_show(idShow)
             if show != False:
                 self.deserialase_show(show)
                 self.log.info("Création d'un show")
 
     def get_info_for_each_episode(self):
         """
-        Lit le Json reçu des episodes
-        et créer un objet qui est ensuite stocké en base
+        Get the Json file from episode, and
+        make an object for ORM Django
         """
         ids = self.get_id_for_each_show()
         for idShow in ids:
-            episode = Connexion('http').getEpisodeFromIDShow(idShow)
+            episode = Connexion('http').get_episode_from_id_show(idShow)
             if episode != False:
                 self.deserialase_episode(episode)
                 self.log.info("Création des épisode pour la série %s" % str(idShow))
 
-    @staticmethod
     def deserialase_show(self, obj):
+        """
+        Extract all data from the object and made an Show object
+        for Database
+        @see: AdminBot/model.py
+        @param self: itself
+        @param obj: object from Json file from Betaserie API
+        """
         if 'show' in obj:
             obj = obj['show']
             if len(obj['genres']) == 0:
@@ -137,18 +152,23 @@ class Betaseries:
                          idbetaserie=obj['id'])
                 p.save()
                 self.log.info("Show Update")
-            return p
         else:
             self.log.error("Erreur à la déserialisation")
 
-    @staticmethod
     def deserialase_episode(self, objs):
+        """
+        Extract all data from the object and made an Episode object
+        for Database
+        @see: AdminBot/model.py
+        @param self: itself
+        @param objs: object from Json file from Betaserie API
+        """
         show = None
         for obj in objs:
             try:
                 show = Show.objects.get(title=obj['show_title'], idbetaserie=obj['show_id'])
             except Show.DoesNotExist:
-                self.deserialase_show(Connexion('http').getEachShow(obj['show_id']))
+                self.deserialase_show(Connexion('http').get_each_show(obj['show_id']))
             else:
                 show = Show.objects.get(title=obj['show_title'], idbetaserie=obj['show_id'])
             ep = Episode(title=obj['title'],
