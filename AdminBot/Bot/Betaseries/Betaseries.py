@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from reportlab.lib.pdfencrypt import encryptPdfInMemory
 
 __author__ = 'Alexandre Cloquet'
 __credits__ = ["Alexandre Cloquet"]
