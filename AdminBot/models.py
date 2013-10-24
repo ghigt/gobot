@@ -8,7 +8,7 @@ from django.db import models
 class Show(models.Model):
     thetvdb_id = models.IntegerField(null=True)
     imdb_id = models.IntegerField(null=True)
-    title = models.CharField(max_length=200)
+    title = models.CharField(db_index=True, max_length=200)
     description = models.TextField()
     seasons = models.PositiveIntegerField()
     nbepisode = models.PositiveIntegerField()
@@ -21,18 +21,18 @@ class Show(models.Model):
     lenght = models.PositiveIntegerField()
     status = models.CharField(max_length=50)
     language = models.CharField(max_length=20)
-    idbetaserie = models.IntegerField(null=True)
+    idbetaserie = models.IntegerField(db_index=True, null=True)
 
     def __unicode__(self):
         return self.title
 
 
 class Episode(models.Model):
-    title = models.CharField(max_length=200)
+    title = models.CharField(db_index=True, max_length=200)
     season = models.PositiveSmallIntegerField()
     episode = models.PositiveIntegerField()
     showid = models.PositiveIntegerField()
-    show_title = models.CharField(max_length=200)
+    show_title = models.CharField(db_index=True, max_length=200)
     code = models.CharField(max_length=20)
     description = models.TextField()
     date = models.DateField()
