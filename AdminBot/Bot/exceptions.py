@@ -11,5 +11,10 @@ __all__ = {"InvalidInfoBot", "IdAlreadyUse"}
 class InvalidInfoBot(Exception):
     """Invalid information from Bot"""
 
+
 class IdAlreadyUse(Exception):
     """Id already use in database"""
+
+
+class NoRespondFromAPI(Exception):
+    """Api don't respond"""
