@@ -171,10 +171,9 @@ class Betaseries:
         @param objs: object from Json file from Betaserie API
         @return: Nothing in all case
         """
-        show = None
         for obj in objs:
             try:
-                show = Show.objects.get(title=obj['show_title'], idbetaserie=obj['show_id'])
+                Show.objects.get(title=obj['show_title'], idbetaserie=obj['show_id'])
             except Show.DoesNotExist:
                 self.deserialase_show(Connexion('http').get_each_show(obj['show_id']))
             finally:
@@ -194,7 +193,7 @@ class Betaseries:
                 ep.save()
                 self.log.info("Episode Save")
                 return
-            finally:
+            else:
                 ep = Episode(id=x.id,
                              title=obj['title'],
                              season=obj['season'],
