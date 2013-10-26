@@ -2,12 +2,14 @@ from django.conf.urls import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+import AdminBot
 from AdminBot.views import hello, current_datetime
+from AdminBot.login_user import login_user
 admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    # url(r'^$', 'DjangoBot.views.home', name='home'),
+    #url(r'^$', 'AdminBot.views.home', name='home'),
     # url(r'^DjangoBot/', include('DjangoBot.foo.urls')),
     url(r'^hello/$', hello),
     url(r'^time/$', current_datetime),
@@ -17,5 +19,5 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^', include(admin.site.urls)),
+    url(r'^adminbot/', include('AdminBot.urls'))
 )
