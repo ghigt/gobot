@@ -127,6 +127,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
+    'bootstrap_admin',
     'django.contrib.admin',
     'bootstrap_toolkit',
     # Uncomment the next line to enable admin documentation:
