@@ -3,32 +3,47 @@
 {% load bootstrap_toolkit %}
 
 {% block content %}
-    <div id="login">
-        <form class="form-actions" name="LoginForm" action="" method="post">
-            {% csrf_token %}
-            {{ form|as_bootstrap }}
-            {% if next %}
-                <input type="hidden" name="next" value="{{ next }}"/>
-            {% endif %}
-            <div class="form-actions">
-                <label class="control-label" for="username">Username</label>
+    <div class="container">
+        <div class="row">
+            <div class="offset4 span4">
+                <form class="form-{{ layout }} well" action="/admin/" method="post">
+                    {% csrf_token %}
+                    <fieldset>
 
-                <div class="form-actions">
-                    <input type="text" id="username" name="username" placeholder="Username">
-                </div>
-            </div>
-            <div class="form-actions">
-                <label class="control-label" for="password">Password</label>
+                        <!-- Form Name -->
+                        <legend>Login</legend>
 
-                <div class="form-actions">
-                    <input type="password" name="password" id="password" placeholder="Password">
-                </div>
+                        <!-- Text input-->
+                        <div class="control-group">
+                            <label class="control-label" for="username">Login</label>
+
+                            <div class="controls">
+                                <input id="username" name="username" placeholder="Login" class="input-xlarge"
+                                       type="text">
+                            </div>
+                        </div>
+
+                        <!-- Password input-->
+                        <div class="control-group">
+                            <label class="control-label" for="password">Password</label>
+
+                            <div class="controls">
+                                <input id="password" name="password" placeholder="Password"
+                                       class="input-xlarge" type="password">
+                            </div>
+                        </div>
+
+                        <!-- Button (Double) -->
+                        <div class="control-group">
+                            <div class="controls">
+                                <button id="button1id" name="button1id" class="btn btn-success">Login</button>
+                                <input class="btn btn-danger" type="reset" value="Reset">
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </form>
             </div>
-            <div class="form-actions">
-                <div class="controls">
-                    <button type="submit" class="btn btn-primary">Test</button>
-                </div>
-            </div>
-        </form>
+        </div>
     </div>
 {% endblock %}
