@@ -1,27 +1,32 @@
-{% block main %}
+{% extends "base.html" %}
+
+{% load bootstrap_toolkit %}
+
+{% block content %}
     <div id="login">
-        <form class="form-horizontal" name="LoginForm" action="/login/" method="post">
+        <form class="form-actions" name="LoginForm" action="" method="post">
             {% csrf_token %}
+            {{ form|as_bootstrap }}
             {% if next %}
                 <input type="hidden" name="next" value="{{ next }}"/>
             {% endif %}
-            <div class="control-group">
+            <div class="form-actions">
                 <label class="control-label" for="username">Username</label>
 
-                <div class="controls">
+                <div class="form-actions">
                     <input type="text" id="username" name="username" placeholder="Username">
                 </div>
             </div>
-            <div class="control-group">
+            <div class="form-actions">
                 <label class="control-label" for="password">Password</label>
 
-                <div class="controls">
+                <div class="form-actions">
                     <input type="password" name="password" id="password" placeholder="Password">
                 </div>
             </div>
-            <div class="control-group">
+            <div class="form-actions">
                 <div class="controls">
-                    <button type="submit" class="btn">test</button>
+                    <button type="submit" class="btn btn-primary">Test</button>
                 </div>
             </div>
         </form>
