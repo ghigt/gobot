@@ -25,4 +25,10 @@ if __name__ == "__main__":
     u.is_superuser = True
     u.is_staff = True
     u.save()
+
+    d = User(username='Nkio')
+    d.set_password('coucou')
+    d.is_superuser = False
+    d.is_staff = False
+    d.save()
     execute_from_command_line(sys.argv)
