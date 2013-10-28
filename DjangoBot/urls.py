@@ -11,9 +11,6 @@ urlpatterns = patterns('',
     # Examples:
     #url(r'^$', 'AdminBot.views.home', name='home'),
     # url(r'^DjangoBot/', include('DjangoBot.foo.urls')),
-    url(r'^hello/$', hello),
-    url(r'^time/$', current_datetime),
-
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
