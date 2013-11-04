@@ -13,12 +13,12 @@ class AdressBase(object):
     """Adress base for the other adress object
     you must use for other bot."""
 
-    def __init__(self, http=settings.HTTP, api_key=None, address=None):
+    def __init__(self, http=settings.HTTP_MODE, api_key=None, address=None):
         self.http = http
         self.api_key = api_key
         self.address = address
 
-    def set_http(self, http=settings.HTTP):
+    def set_http(self, http=settings.HTTP_MODE):
         self.http = http.lower()
 
     def get_http(self):
@@ -41,5 +41,5 @@ class AdressBase(object):
         raise NotImplementedError("Subclasses Should have implemented this")
 
     @abstractmethod
-    def get_new_address_with_all_param(self, api_key, address, http=settings.HTTP):
+    def get_new_address_with_all_param(self, api_key, address, http=settings.HTTP_MODE):
         raise NotImplementedError("Subclasses Should have implemented this")
