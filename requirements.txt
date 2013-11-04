@@ -1,0 +1,6 @@
+Django==1.5.5
+bootstrap_admin
+MySQL-python==1.2.3
+django-bootstrap-toolkit
+requests
+django_jenkins

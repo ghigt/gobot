@@ -57,7 +57,7 @@ class Connexion:
         @return: Information about id show or None if Json file can't be decoded
         """
         self.adress.set_adress(self.access_url[1][1])
-        print self.adress.get_new_address() + "&id=%s" % id_show
+        #print self.adress.get_new_address() + "&id=%s" % id_show
         r = requests.get(self.adress.get_new_address() + "&id=%s" % id_show, headers=self.header)
         self.log.info("Adresse interrogée = %s" % str(self.adress.get_new_address() + "&id=%s" % id_show))
         if r.status_code == requests.codes.ok:

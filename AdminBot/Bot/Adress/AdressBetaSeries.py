@@ -22,7 +22,7 @@ class AdressBetaseries(AdressBase):
             raise KeyError("You must use get_new_adress_with_all_param")
         return '%s%s%s' % (self.http, self.address, self.api_key)
 
-    def get_new_address_with_all_param(self, api_key, address, http=settings.HTTP):
+    def get_new_address_with_all_param(self, api_key, address, http=settings.HTTP_MODE):
         """
         Format new adress to make a request http on it with all parameters
         @param api_key: Need an Api key to login on server
