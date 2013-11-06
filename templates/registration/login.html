@@ -3,10 +3,13 @@
 {% load bootstrap_toolkit %}
 
 {% block content %}
+    {% if form.errors %}
+        <p class="error">Sorry, that's not a valid username or password</p>
+    {% endif %}
     <div class="container">
         <div class="row">
             <div class="offset4 span4">
-                <form class="form-{{ layout }} well" action="/admin/" method="post">
+                <form class="form-{{ layout }} well"  method="post">
                     {% csrf_token %}
                     <fieldset>
 
@@ -34,12 +37,12 @@
                         </div>
 
                         <!-- Button (Double) -->
-                        <div class="control-group">
-                            <div class="controls">
-                                <button id="button1id" name="button1id" class="btn btn-success">Login</button>
-                                <input class="btn btn-danger" type="reset" value="Reset">
-                            </div>
-                        </div>
+       {% if next %}
+        <input type="hidden" name="next" value="{{ next }}" />
+      {% else %}
+        <input type="hidden" name="next" value="/adminbot/" />
+      {% endif %}
+      <input type="submit" value="login" />
 
                     </fieldset>
                 </form>

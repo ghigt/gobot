@@ -9,19 +9,39 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 
 
-def home(request):
-    logout(request)
+def main_page(request):
+    return render_to_response('index.html')
+
+
+def login_user(request):
     username = password = ''
-    print "coucou"
     if request.POST:
-        username = request.POST['username']
-        password = request.POST['password']
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
                 login(request, user)
-            return HttpResponseRedirect('/admin/')
-    return render_to_response('login.html', context_instance=RequestContext(request))
+                return render_to_response('adminbot/index.html')
+    return render_to_response('registration/login.html', {'username': username}, context_instance=RequestContext(request))
+
+
+def logout_page(request):
+    """
+    Log users out and re-direct them to the main page.
+    """
+    logout(request)
+    return HttpResponseRedirect('/')
+
+
+@login_required
+def adminbot_main_page(request):
+    """
+    If users are authenticated, direct them to the main page. Otherwise, take
+    them to the login page.
+    """
+    return render_to_response('adminbot/index.html')
 
 
 def hello(request):
