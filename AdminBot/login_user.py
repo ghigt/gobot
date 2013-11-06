@@ -24,4 +24,4 @@ def login_user(request):
             if user.is_active:
                 login(request, user)
             return HttpResponseRedirect('/admin/')
-    return render_to_response('login.html', context_instance=RequestContext(request))
+    return render_to_response('registration/login.html', context_instance=RequestContext(request))
