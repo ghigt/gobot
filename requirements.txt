@@ -8,3 +8,4 @@ django-jenkins==0.14.1
 pycurl==7.19.0
 pylint==1.0.0
 requests==2.0.0
+bootstrap_admin
