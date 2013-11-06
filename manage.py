@@ -10,7 +10,7 @@ if __name__ == "__main__":
 
     os.system('mysql --user=root --password=root -e"DROP DATABASE IF EXISTS testbot"')
     os.system('mysql --user=root --password=root -e"CREATE DATABASE testbot CHARACTER SET utf8"')
-
+    os.system('rm data.db')
     # For server
     #os.system('mysql --user=root --password=bjtu2013sylimysql -e"DROP DATABASE IF EXISTS testbot"')
     #os.system('mysql --user=root --password=bjtu2013sylimysql -e"CREATE DATABASE testbot CHARACTER SET utf8"')
