@@ -18,17 +18,39 @@ class AdressBase(object):
         self.api_key = api_key
         self.address = address
 
-    def set_http(self, http=settings.HTTP_MODE):
-        self.http = http.lower()
-
-    def get_http(self):
+    @property
+    def http(self):
+        """
+        Return the value of http attribute
+        @return: http attribute, str()
+        """
         return self.http
 
-    def set_api_key(self, api_key=None):
-        self.api_key = api_key
+    @http.setter
+    def http(self, http=settings.HTTP_MODE):
+        """
+        HTTP attribute, can be http, or https
+        Setter for http attribute
+        @param http: http or https
+        """
+        self.http = http
 
-    def get_api_key(self):
+    @property
+    def api_key(self):
+        """
+        Api Key attribute, allows authenticate bot on different Api.
+        Return value of api_key attribute
+        @return: str() api_key
+        """
         return self.api_key
+
+    @api_key.setter
+    def api_key(self, api_key=None):
+        """
+
+        @param api_key:
+        """
+        self.api_key = api_key
 
     def set_adress(self, address=None):
         self.address = address
