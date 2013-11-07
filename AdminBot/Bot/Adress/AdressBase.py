@@ -12,9 +12,7 @@ from AdminBot.Bot import settings
 class AdressBase():
     """Adress base for the other adress object
     you must use for other bot."""
-    http = None
-    api_key = None
-    address = None
+
 
     def __init__(self, http=settings.HTTP_MODE, api_key=None, address=None):
         self.http = http
