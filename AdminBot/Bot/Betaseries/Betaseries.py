@@ -100,7 +100,8 @@ class Betaseries:
             episode = self.connexion.get_episode_from_id_show(idShow)
             if episode != False and episode is not None:
                 self.deserialase_episode(episode)
-                self.log.info("Création des épisode pour la série %s" % str(idShow))
+                self.log.info(
+                    "Création des épisode pour la série %s" % str(idShow))
         return
 
     def deserialase_show(self, obj):
@@ -129,7 +130,8 @@ class Betaseries:
                      language=obj['language'],
                      idbetaserie=obj['id'])
             try:
-                x = Show.objects.get(title=obj['title'], creation=obj['creation'])
+                x = Show.objects.get(title=obj['title'],
+                                     creation=obj['creation'])
             except Show.DoesNotExist:
                 p.save()
                 self.log.info("Show Save")
@@ -169,11 +171,14 @@ class Betaseries:
         """
         for obj in objs:
             try:
-                Show.objects.get(title=obj['show_title'], idbetaserie=obj['show_id'])
+                Show.objects.get(
+                    title=obj['show_title'], idbetaserie=obj['show_id'])
             except Show.DoesNotExist:
-                self.deserialase_show(Connexion('http').get_each_show(obj['show_id']))
+                self.deserialase_show(
+                    Connexion('http').get_each_show(obj['show_id']))
             finally:
-                show = Show.objects.get(title=obj['show_title'], idbetaserie=obj['show_id'])
+                show = Show.objects.get(title=obj['show_title'],
+                                        idbetaserie=obj['show_id'])
                 ep = Episode(title=obj['title'],
                              season=obj['season'],
                              episode=obj['episode'],
@@ -184,7 +189,8 @@ class Betaseries:
                              date=obj['date'])
                 ep.show_id = show.id
             try:
-                x = Episode.objects.get(title=obj['title'], show_title=obj['show_title'])
+                x = Episode.objects.get(title=obj['title'],
+                                        show_title=obj['show_title'])
             except Episode.DoesNotExist:
                 ep.save()
                 self.log.info("Episode Save")
@@ -203,5 +209,4 @@ class Betaseries:
                 ep.save()
                 self.log.info("Episode Update")
                 return
-
 Betaseries()
