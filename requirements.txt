@@ -9,3 +9,5 @@ pycurl==7.19.0
 pylint==1.0.0
 requests==2.0.0
 bootstrap_admin
+pyflakes==0.7.3
+pep8==1.4.6
