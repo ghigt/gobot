@@ -69,7 +69,8 @@ class AdressBase():
         raise NotImplementedError("Subclasses Should have implemented this")
 
     @abstractmethod
-    def get_new_address_with_all_param(self, api_key, address, http=settings.HTTP_MODE):
+    def get_new_address_with_all_param(self, api_key, address,
+                                       http=settings.HTTP_MODE):
         raise NotImplementedError("Subclasses Should have implemented this")
 
     http = property(get_http, set_http)
