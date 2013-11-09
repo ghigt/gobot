@@ -166,6 +166,10 @@ JENKINS_TASKS = (
     'django_jenkins.tasks.django_tests',
 )
 
+PROJECT_APPS = (
+    'AdminBot',
+)
+
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 
 # A sample logging configuration. The only tangible logging

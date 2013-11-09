@@ -50,3 +50,18 @@ class GenreToShow(models.Model):
     id_show = models.ForeignKey(Show)
 
 # Fin Model Bot
+
+# Debut du model Movie
+
+
+class GenreToMovie(models.Model):
+    id_genre = models.ForeignKey(Genre)
+    id_movie = models.ForeignKey(Movie)
+
+
+class Movie(models.Model):
+    title = models.CharField(db_index=True, max_length=500)
+    id_tvdb = models.PositiveIntegerField()
+    description = models.TextField()
+    dateOnAir = models.DateField()
+    genre = models.ForeignKey(GenreToMovie)
