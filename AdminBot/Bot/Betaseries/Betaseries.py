@@ -32,6 +32,7 @@ class Betaseries:
 
     def __init__(self):
         self.connexion = Connexion(settings.HTTP_MODE)
+        self.get_info_for_each_show()
         self.get_info_for_each_episode()
 
     @staticmethod
@@ -176,7 +177,7 @@ class Betaseries:
             except Show.DoesNotExist:
                 self.deserialase_show(
                     Connexion('http').get_each_show(obj['show_id']))
-            finally:
+            else:
                 show = Show.objects.get(title=obj['show_title'],
                                         idbetaserie=obj['show_id'])
                 ep = Episode(title=obj['title'],
