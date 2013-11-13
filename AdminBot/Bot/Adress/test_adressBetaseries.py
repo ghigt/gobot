@@ -1,5 +1,4 @@
 from unittest import TestCase
-from AdressBase import AdressBase
 from AdressBetaSeries import AdressBetaseries
 from AdminBot.Bot import settings
 

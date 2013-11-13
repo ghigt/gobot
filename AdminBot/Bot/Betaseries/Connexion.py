@@ -36,7 +36,8 @@ class Connexion:
         """
         self.adress.set_adress(self.access_url[0][1])
         r = requests.get(self.adress.get_new_address(), headers=self.header)
-        self.log.info("Adresse interrogée = %s" % self.adress.get_new_address())
+        self.log.info("Adresse interrogée = %s" %
+                      self.adress.get_new_address())
         if r.status_code == requests.codes.ok:
             self.log.info("Connexion à BetaSeries : "
                           "Status de la page = %d" % r.status_code)
@@ -57,7 +58,8 @@ class Connexion:
         """
         Allow to have one by one show in Json file
         @param id_show: id from show to make a correct request
-        @return: Information about id show or None if Json file can't be decoded
+        @return: Information about id show or None if Json file can't be
+        decoded
         """
         self.adress.set_adress(self.access_url[1][1])
         #print self.adress.get_new_address() + "&id=%s" % id_show
@@ -85,13 +87,15 @@ class Connexion:
         """
         Allow to have all episodes from id_show in parameter
         @param id_show: id from show to make a correct request
-        @return: All episodes about id show or None if Json file can't be decode
+        @return: All episodes about id show or None if Json file can't be
+        decode
         """
         self.adress.set_adress(self.access_url[2][1])
         r = requests.get(self.adress.get_new_address()
                          + "&id=%s" % id_show, headers=self.header)
         self.log.info("Adresse interrogée = %s"
-                      % str(self.adress.get_new_address() + "&id=%s" % id_show))
+                      % str(self.adress.get_new_address() +
+                            "&id=%s" % id_show))
         if r.status_code == requests.codes.ok:
             self.log.info("Connexion à BetaSeries : Status de la page = %d"
                           % r.status_code)
