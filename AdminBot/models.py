@@ -8,6 +8,7 @@ class Log(models.Model):
     date = models.DateField()
     path_to_log = models.CharField(max_length=500)
 
+
 class Bot(models.Model):
     version = models.CharField(max_length=10)
     actif = models.PositiveSmallIntegerField()
@@ -18,6 +19,9 @@ class Bot(models.Model):
     last_use = models.DateTimeField()
     launch_time = models.DateTimeField()
     elapsed_time = models.CharField(max_length=200)
+
+    def __unicode__(self):
+        return u'%s - %s' % (self.name, self.version)
 
 # Debut Model Bot
 
