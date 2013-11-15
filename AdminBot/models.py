@@ -2,6 +2,23 @@ from django.db import models
 
 # Create your models here.
 
+
+class Log(models.Model):
+    error = models.PositiveSmallIntegerField()
+    date = models.DateField()
+    path_to_log = models.CharField(max_length=500)
+
+class Bot(models.Model):
+    version = models.CharField(max_length=10)
+    actif = models.PositiveSmallIntegerField()
+    log_bot = models.ForeignKey(Log)
+    error_bot = models.ForeignKey(Log, related_name="error_bot")
+    name = models.CharField(max_length=100, db_index=True)
+    nb_iter = models.PositiveIntegerField()
+    last_use = models.DateTimeField()
+    launch_time = models.DateTimeField()
+    elapsed_time = models.CharField(max_length=200)
+
 # Debut Model Bot
 
 
