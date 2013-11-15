@@ -16,19 +16,6 @@ if __name__ == "__main__":
     #os.system('mysql --user=root --password=bjtu2013sylimysql -e"CREATE DATABASE testbot CHARACTER SET utf8"')
     # Run the syncdb
     management.call_command('syncdb', interactive=False)
+    management.call_command('loaddata', "user.json")
 
-    # Create the super user and sets his password.
-    from django.contrib.auth.models import User
-
-    u = User(username='admin')
-    u.set_password('password')
-    u.is_superuser = True
-    u.is_staff = True
-    u.save()
-
-    d = User(username='Nkio')
-    d.set_password('coucou')
-    d.is_superuser = False
-    d.is_staff = False
-    d.save()
     execute_from_command_line(sys.argv)
