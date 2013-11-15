@@ -19,3 +19,6 @@ class BotBase(object):
 
     def get_logger(self):
         raise NotImplementedError("Subclasses Should have implemented this")
+
+    def register_bot(self):
+        raise NotImplementedError("Subclasses Should have implemented this")
