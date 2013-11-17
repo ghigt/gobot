@@ -6,7 +6,10 @@ __email__ = "Alexandre.cloquet@gmail.com"
 __status__ = "Development"
 
 
-class BotBase(object):
+class BotBase():
+    def __init__(self):
+        pass
+
     @staticmethod
     def get_api_key():
         raise NotImplementedError("Subclasses Should have implemented this")
@@ -22,3 +25,6 @@ class BotBase(object):
 
     def register_bot(self):
         raise NotImplementedError("Subclasses Should have implemented this")
+
+    class Meta:
+        abstract = True

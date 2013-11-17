@@ -16,46 +16,50 @@ from django.core.management import setup_environ
 import settings
 
 #For Alexandre
+
 sys.path.append('/home/nkio/PycharmProjects/DjangoBot/AdminBot/')
+sys.path.append("C:/Users/Nkio/PycharmProjects/DjangoBot/AdminBot/")
 #For server
 #sys.path.append(os.path.join(os.path.abspath('..'), '../../'))
 os.environ['DJANGO_SETTINGS_MODULE'] = 'DjangoBot.settings'
 
 setup_environ(settings)
+import datetime
+from AdminBot.Bot.RegisterBot.RegisterBot import RegisterBot
+from AdminBot.Bot.bot.BotBase import BotBase
 from Connexion import Connexion
 from AdminBot.models import Episode, Show
 
 
-class Betaseries:
+class Betaseries(BotBase):
     logging.config.fileConfig("../configuration.cfg")
     log = logging.getLogger("BetaSeries")
 
     def __init__(self):
+        BotBase.__init__(self)
+
         self.connexion = Connexion(settings.HTTP_MODE)
         self.get_info_for_each_show()
         self.get_info_for_each_episode()
 
+    def register_bot(self):
+        bot = RegisterBot(version=0.01, actif=True,
+                          log_bot="BetaserieLogInfo.log",
+                          error_bot="BetaserieLogError.log", name="Betaserie",
+                          nb_iter=0, last_use=datetime.datetime.today())
     @staticmethod
-    def get_api_key():
-        """
-        Static Method
-        Allows to have API key for Betaserie API
-        @return: str() with API key
-        """
-        return settings.API_KEY_BETASERIE
-
     def get_logger(self):
         """
         Static Method
         Allows to have the logger for Betaserie API
-        @return: Logger
+        :return: Logger
         """
         return self.log
 
     def get_url_for_each_series(self):
         """
         Allows to have all url series for Betaserie API
-        @return: List(url) for every series
+        :return: List(url) for every series
         """
         list_url = []
         list_tmp = self.connexion.get_all_show()
@@ -67,7 +71,7 @@ class Betaseries:
     def get_id_for_each_show(self):
         """
         Allows to have all id series for Betaserie API
-        @return: List(id) for every series
+        :return: List(id) for every series
         """
         list_id = []
         list_tmp = self.connexion.get_all_show()
@@ -80,7 +84,7 @@ class Betaseries:
         """
         Get the Json file from series, and
         make an object for ORM Django
-        @return: Nothing in all case
+        :return: Nothing in all case
         """
         ids = self.get_id_for_each_show()
         for idShow in ids:
@@ -94,7 +98,7 @@ class Betaseries:
         """
         Get the Json file from episode, and
         make an object for ORM Django
-        @return: Nothing in all case
+        :return: Nothing in all case
         """
         ids = self.get_id_for_each_show()
         for idShow in ids:
@@ -109,10 +113,10 @@ class Betaseries:
         """
         Extract all data from the object and made an Show object
         for Database
-        @see: AdminBot/model.py
-        @param self: itself
-        @param obj: object from Json file from Betaserie API
-        @return: Nothing in all case
+        :see: AdminBot/model.py
+        :param self: itself
+        :param obj: object from Json file from Betaserie API
+        :return: Nothing in all case
         """
         if 'show' in obj:
             obj = obj['show']
@@ -165,10 +169,10 @@ class Betaseries:
         """
         Extract all data from the object and made an Episode object
         for Database
-        @see: AdminBot/model.py
-        @param self: itself
-        @param objs: object from Json file from Betaserie API
-        @return: Nothing in all case
+        :see: AdminBot/model.py
+        :param self: itself
+        :param objs: object from Json file from Betaserie API
+        :return: Nothing in all case
         """
         for obj in objs:
             try:
@@ -210,4 +214,15 @@ class Betaseries:
                 ep.save()
                 self.log.info("Episode Update")
                 return
+
+
+def get_api_key():
+    """
+    Static Method
+    Allows to have API key for Betaserie API
+    :return: str() with API key
+    """
+    return settings.API_KEY_BETASERIE
+
+
 Betaseries()

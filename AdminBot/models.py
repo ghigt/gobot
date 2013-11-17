@@ -4,21 +4,31 @@ from django.db import models
 
 
 class Log(models.Model):
-    error = models.PositiveSmallIntegerField()
     date = models.DateField()
     path_to_log = models.CharField(max_length=500)
+
+    class Meta:
+        abstract = True
+
+
+class LogError(Log):
+    error = models.BooleanField(default=True)
+
+
+class LogInfo(Log):
+    error = models.BooleanField(default=False)
 
 
 class Bot(models.Model):
     version = models.CharField(max_length=10)
-    actif = models.PositiveSmallIntegerField()
-    log_bot = models.ForeignKey(Log)
-    error_bot = models.ForeignKey(Log, related_name="error_bot")
+    actif = models.BooleanField(default=True)
+    log_bot = models.ForeignKey(LogInfo)
+    error_bot = models.ForeignKey(LogError)
     name = models.CharField(max_length=100, db_index=True)
     nb_iter = models.PositiveIntegerField()
     last_use = models.DateTimeField()
-    launch_time = models.DateTimeField()
-    elapsed_time = models.CharField(max_length=200)
+    launch_time = models.DateTimeField(null=True, blank=True)
+    elapsed_time = models.CharField(null=True, blank=True, max_length=200)
 
     def __unicode__(self):
         return u'%s - %s' % (self.name, self.version)
