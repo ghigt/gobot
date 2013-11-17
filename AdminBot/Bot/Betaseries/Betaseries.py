@@ -25,6 +25,7 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'DjangoBot.settings'
 
 setup_environ(settings)
 import datetime
+from AdminBot.Bot import settings as settingBot
 from AdminBot.Bot.RegisterBot.RegisterBot import RegisterBot
 from AdminBot.Bot.bot.BotBase import BotBase
 from Connexion import Connexion
@@ -32,7 +33,7 @@ from AdminBot.models import Episode, Show
 
 
 class Betaseries(BotBase):
-    logging.config.fileConfig("../configuration.cfg")
+    logging.config.fileConfig(settingBot.CONFIG_LOG)
     log = logging.getLogger("BetaSerie")
 
     def __init__(self):
