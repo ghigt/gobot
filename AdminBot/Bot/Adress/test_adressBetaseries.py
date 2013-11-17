@@ -18,6 +18,8 @@ class TestAdressBetaseries(TestCase):
     def test_get_new_address(self):
         self.assertEqual(self.adressbeta.get_new_address(),
                          "https://test3e803b0b5556")
+        with self.assertRaises(KeyError):
+            AdressBetaseries().get_new_address()
 
     def test_get_new_address_with_all_param(self):
         self.assertEqual(self.adressbeta.get_new_address_with_all_param(
