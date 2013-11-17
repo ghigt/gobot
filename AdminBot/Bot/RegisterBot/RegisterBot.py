@@ -36,6 +36,7 @@ class RegisterBot():
         log_error = self.register_log_error()
         try:
             bot = Bot.objects.get(version=self.version, name=self.name)
+            bot.save()
             return bot
         except Bot.DoesNotExist:
             bot = Bot(version=self.version,
@@ -49,28 +50,24 @@ class RegisterBot():
 
     def register_log_error(self):
         try:
-            log = LogError.objects.get(error=True,
-                                       path_to_log=self.path_to_log_error)
+            log = LogError.objects.get(path_to_log=self.path_to_log_error)
             log.date = datetime.datetime.today()
             log.save()
             return log
         except LogError.DoesNotExist:
-            log_error = LogError(error=True,
-                                 date=datetime.datetime.today(),
+            log_error = LogError(date=datetime.datetime.today(),
                                  path_to_log=self.path_to_log_error)
             log_error.save()
             return log_error
 
     def register_log_info(self):
         try:
-            log = LogInfo.objects.get(error=False,
-                                      path_to_log=self.path_to_log_error)
+            log = LogInfo.objects.get(path_to_log=self.path_to_log_info)
             log.date = datetime.datetime.today()
             log.save()
             return log
         except LogInfo.DoesNotExist:
-            log_info = LogInfo(error=False,
-                               date=datetime.datetime.today(),
+            log_info = LogInfo(date=datetime.datetime.today(),
                                path_to_log=self.path_to_log_info)
             log_info.save()
             return log_info

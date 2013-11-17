@@ -70,7 +70,7 @@ class Connexion:
         if r.status_code == requests.codes.ok:
             self.log.info("Connexion à BetaSeries : Status de la page = %d"
                           % r.status_code)
-            self.log.info("Récupération de la série  = %s" % str(id_show))
+            self.log.info("Récupération de la série = %s" % str(id_show))
             try:
                 r.json()
             except ValueError:

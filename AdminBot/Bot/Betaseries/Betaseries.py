@@ -166,7 +166,7 @@ class Betaseries(BotBase):
                     Connexion('http').get_each_show(obj['show_id']))
             else:
                 self.show = Show.objects.get(title=obj['show_title'],
-                                        idbetaserie=obj['show_id'])
+                                             idbetaserie=obj['show_id'])
                 ep = Episode(title=obj['title'],
                              season=obj['season'],
                              episode=obj['episode'],
