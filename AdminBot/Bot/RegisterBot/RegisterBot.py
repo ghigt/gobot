@@ -10,6 +10,10 @@ from AdminBot.models import Bot, LogError, LogInfo
 
 
 class RegisterBot():
+    """
+    Allow to register a bot in database
+    You just need to call the class RegisterBot in __init__()
+    """
     def __init__(self, version, actif, log_bot,
                  error_bot, name, last_use, nb_iter=0):
         """
