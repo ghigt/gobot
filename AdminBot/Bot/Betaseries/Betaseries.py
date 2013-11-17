@@ -47,6 +47,7 @@ class Betaseries(BotBase):
                           log_bot="BetaserieLogInfo.log",
                           error_bot="BetaserieLogError.log", name="Betaserie",
                           nb_iter=0, last_use=datetime.datetime.today())
+
     @staticmethod
     def get_logger(self):
         """
