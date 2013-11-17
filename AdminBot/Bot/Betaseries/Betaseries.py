@@ -48,8 +48,7 @@ class Betaseries(BotBase):
                           error_bot="BetaserieLogError.log", name="Betaserie",
                           nb_iter=0, last_use=datetime.datetime.today())
 
-    @staticmethod
-    def get_api_key():
+    def get_api_key(self):
         """
         Static Method
         Allows to have API key for Betaserie API
@@ -57,7 +56,6 @@ class Betaseries(BotBase):
         """
         return settings.API_KEY_BETASERIE
 
-    @staticmethod
     def get_logger(self):
         """
         Static Method
@@ -65,6 +63,12 @@ class Betaseries(BotBase):
         :return: Logger
         """
         return self.log
+
+    def get_info_for(self, value):
+        return super(Betaseries, self).get_info_for(value)
+
+    def search(self, value):
+        return super(Betaseries, self).search(value)
 
     def get_url_for_each_series(self):
         """
