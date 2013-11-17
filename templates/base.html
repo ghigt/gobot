@@ -27,7 +27,11 @@
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
-            <a class="brand" href="{% url 'AdminBot.views.main_page' %}">Administration des Robots</a>
+            {% if user.is_authenticated %}
+                <a class="brand" href="{% url 'AdminBot.views.adminbot_main_page' %}">Administration des Robots</a>
+            {%  else %}
+                <a class="brand" href="{% url 'AdminBot.views.main_page' %}">Administration des Robots</a>
+            {% endif %}
             <ul class="nav">
 {#                <li><a href="{% url 'AdminBot.views.login_user' %}" class="">Login</a></li>#}
                 {% if user.is_authenticated %}<li><a href="{% url 'AdminBot.views.logout_page' %}" class="">Logout</a></li>{% endif %}
@@ -68,7 +72,7 @@
         </div>
         <div class="span6" style="text-align:right">
             <p>
-                &copy; <a href="http://twitter.com/dyve">Dylan Verheul</a> 2012
+                &copy; <a href="http://twitter.com/nkio">Alexandre Cloquet</a> 2013
                 |
                 <a href="https://raw.github.com/dyve/django-bootstrap-toolkit/master/LICENSE">license</a>
             </p>
