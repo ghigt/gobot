@@ -28,14 +28,14 @@ class TestRegisterBot(TestCase):
 
     def test____register_bot(self):
         assert self.bot_1.version == u"0.01"
-        assert self.bot_1.actif == True
+        self.assertEquals(self.bot_1.actif, True)
         assert self.bot_1.name == "Betaserie"
         assert self.bot_1.nb_iter == 0
 
     def test____register_log_error(self):
-        assert self.log_error.error == True
+        self.assertEquals(self.log_error.error, True)
         assert self.log_error.path_to_log == "BetaserieLogError.log"
 
     def test____register_log_info(self):
-        assert self.log_info.error == False
+        self.assertEquals(self.log_info.error, False)
         assert self.log_info.path_to_log == "BetaserieLogInfo.log"
