@@ -6,6 +6,7 @@ __email__ = "Alexandre.cloquet@gmail.com"
 __status__ = "Development"
 
 import datetime
+import logging
 from AdminBot.models import Bot, LogError, LogInfo
 
 
@@ -15,6 +16,8 @@ class RegisterBot():
     Allow to register a bot in database
     You just need to call the class RegisterBot in __init__()
     """
+    logging.config.fileConfig("../configuration.cfg")
+    log = logging.getLogger("RegisterBot")
 
     def __init__(self, version, actif, log_bot,
                  error_bot, name, last_use, nb_iter=0):
