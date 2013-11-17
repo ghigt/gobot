@@ -31,11 +31,11 @@ class TestTimer(TestCase):
 
     def test_get_minutes(self):
         self.timer.end_bot()
-        self.assertEqual(self.timer.get_minutes(), 1)
+        assert self.timer.get_minutes() == 1
 
     def test_get_hours(self):
         self.timer.end_bot()
-        self.assertEqual(self.timer.get_hours(), 0)
+        assert self.timer.get_hours() == 0
 
     def test_get_seconds(self):
         self.timer.end_bot()
@@ -51,4 +51,4 @@ class TestTimer(TestCase):
 
     def test_get_all_seconds(self):
         self.timer.end_bot()
-        assert self.timer.get_all_seconds() == 90
+        self.assertAlmostEquals(self.timer.get_all_seconds(), 90, delta=1)
