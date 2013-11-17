@@ -34,25 +34,43 @@ class RegisterBot():
     def register_bot(self):
         log = self.register_log_info()
         log_error = self.register_log_error()
-        bot = Bot(version=self.version,
-                  actif=self.actif,
-                  log_bot=log,
-                  error_bot=log_error,
-                  name=self.name,
-                  nb_iter=self.nb_iter,
-                  last_user=self.last_use)
-        bot.save()
+        try:
+            bot = Bot.objects.get(version=self.version, name=self.name)
+            return bot
+        except Bot.DoesNotExist:
+            bot = Bot(version=self.version,
+                      actif=self.actif,
+                      log_bot=log,
+                      error_bot=log_error,
+                      name=self.name,
+                      nb_iter=self.nb_iter,
+                      last_use=self.last_use)
+            bot.save()
 
     def register_log_error(self):
-        log_error = LogError(error=True,
-                             date=datetime.datetime.today(),
-                             path_to_log=self.path_to_log_error)
-        log_error.save()
-        return log_error
+        try:
+            log = LogError.objects.get(error=True,
+                                       path_to_log=self.path_to_log_error)
+            log.date = datetime.datetime.today()
+            log.save()
+            return log
+        except LogError.DoesNotExist:
+            log_error = LogError(error=True,
+                                 date=datetime.datetime.today(),
+                                 path_to_log=self.path_to_log_error)
+            log_error.save()
+            return log_error
 
     def register_log_info(self):
-        log_info = LogInfo(error=False,
-                           date=datetime.datetime.today(),
-                           path_to_log=self.path_to_log_info)
-        log_info.save()
-        return log_info
+        try:
+            log = LogInfo.objects.get(error=False,
+                                      path_to_log=self.path_to_log_error)
+            log.date = datetime.datetime.today()
+            log.save()
+            return log
+        except LogInfo.DoesNotExist:
+            log_info = LogInfo(error=False,
+                               date=datetime.datetime.today(),
+                               path_to_log=self.path_to_log_info)
+            log_info.save()
+            return log_info

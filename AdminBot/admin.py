@@ -7,10 +7,11 @@ __status__ = "Development"
 
 
 from django.contrib import admin
-from AdminBot.models import Show, Episode, Genre, Bot, Log
+from AdminBot.models import Show, Episode, Genre, Bot, LogInfo, LogError
 
 admin.site.register(Show)
 admin.site.register(Episode)
 admin.site.register(Genre)
 admin.site.register(Bot)
-admin.site.register(Log)
+admin.site.register(LogInfo)
+admin.site.register(LogError)

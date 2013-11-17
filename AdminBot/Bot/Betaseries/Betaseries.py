@@ -37,9 +37,9 @@ class Betaseries(BotBase):
 
     def __init__(self):
         BotBase.__init__(self)
-
+        self.register_bot()
         self.connexion = Connexion(settings.HTTP_MODE)
-        self.get_info_for_each_show()
+        #self.get_info_for_each_show()
         self.get_info_for_each_episode()
 
     def register_bot(self):
@@ -92,7 +92,6 @@ class Betaseries(BotBase):
             show = self.connexion.get_each_show(idShow)
             if show != False and show is not None:
                 self.deserialase_show(show)
-                self.log.info("Création d'un show")
         return
 
     def get_info_for_each_episode(self):
@@ -123,37 +122,20 @@ class Betaseries(BotBase):
             obj = obj['show']
             if len(obj['genres']) == 0:
                 obj['genres'] = "  "
-            p = Show(thetvdb_id=obj['thetvdb_id'],
-                     imdb_id=obj['imdb_id'],
-                     title=obj['title'],
-                     description=re.escape(obj['description']),
-                     seasons=obj['seasons'],
-                     nbepisode=obj['episodes'],
-                     creation=obj['creation'],
-                     genre=obj['genres'][0],
-                     lenght=obj['length'],
-                     status=obj['status'],
-                     language=obj['language'],
-                     idbetaserie=obj['id'])
             try:
                 x = Show.objects.get(title=obj['title'],
-                                     creation=obj['creation'])
-            except Show.DoesNotExist:
-                p.save()
-                self.log.info("Show Save")
+                                     creation=obj['creation'],
+                                     seasons=obj['seasons'])
+                x.save()
+                self.log.info("Show Update")
                 return
-            else:
-                p = Show(id=x.id,
-                         thetvdb_id=obj['thetvdb_id'],
+            except Show.DoesNotExist:
+                p = Show(thetvdb_id=obj['thetvdb_id'],
                          imdb_id=obj['imdb_id'],
                          title=obj['title'],
                          description=obj['description'],
                          seasons=obj['seasons'],
                          nbepisode=obj['episodes'],
-                         follower=obj['followers'],
-                         comment=obj['comments'],
-                         similars=obj['similars'],
-                         characters=obj['characters'],
                          creation=obj['creation'],
                          genre=obj['genres'][0],
                          lenght=obj['length'],
@@ -161,7 +143,7 @@ class Betaseries(BotBase):
                          language=obj['language'],
                          idbetaserie=obj['id'])
                 p.save()
-                self.log.info("Show Update")
+                self.log.info("Show Save")
         else:
             self.log.error("Erreur à la déserialisation")
         return
@@ -183,7 +165,7 @@ class Betaseries(BotBase):
                 self.deserialase_show(
                     Connexion('http').get_each_show(obj['show_id']))
             else:
-                show = Show.objects.get(title=obj['show_title'],
+                self.show = Show.objects.get(title=obj['show_title'],
                                         idbetaserie=obj['show_id'])
                 ep = Episode(title=obj['title'],
                              season=obj['season'],
@@ -193,17 +175,15 @@ class Betaseries(BotBase):
                              code=obj['code'],
                              description=obj['description'],
                              date=obj['date'])
-                ep.show_id = show.id
+                ep.show_id = self.show.id
             try:
                 x = Episode.objects.get(title=obj['title'],
                                         show_title=obj['show_title'])
-            except Episode.DoesNotExist:
-                ep.save()
-                self.log.info("Episode Save")
+                x.save()
+                self.log.info("Episode Update")
                 return
-            else:
-                ep = Episode(id=x.id,
-                             title=obj['title'],
+            except Episode.DoesNotExist:
+                ep = Episode(title=obj['title'],
                              season=obj['season'],
                              episode=obj['episode'],
                              showid=obj['show_id'],
@@ -211,9 +191,9 @@ class Betaseries(BotBase):
                              code=obj['code'],
                              description=obj['description'],
                              date=obj['date'])
-                ep.show_id = show.id
+                ep.show_id = self.show.id
                 ep.save()
-                self.log.info("Episode Update")
+                self.log.info("Episode Save")
                 return
 
 
