@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 __author__ = 'Alexandre Cloquet'
 __credits__ = ["Alexandre Cloquet"]
 __version__ = "0.1"
@@ -7,6 +8,7 @@ __status__ = "Development"
 
 import datetime
 import logging
+import logging.config
 from AdminBot.models import Bot, LogError, LogInfo
 
 
@@ -16,9 +18,6 @@ class RegisterBot():
     Allow to register a bot in database
     You just need to call the class RegisterBot in __init__()
     """
-    logging.config.fileConfig("../configuration.cfg")
-    log = logging.getLogger("RegisterBot")
-
     def __init__(self, version, actif, log_bot,
                  error_bot, name, last_use, nb_iter=0):
         """
@@ -31,6 +30,9 @@ class RegisterBot():
         :param nb_iter: 0 by default
         :param last_use: Date of today
         """
+        #logging.config.fileConfig("../configuration.cfg")
+        logging.config.fileConfig("../configuration.cfg")
+        self.logger = logging.getLogger("RegisterBot")
         self.__version = version
         self.__actif = actif
         self.__path_to_log_info = log_bot
@@ -52,6 +54,9 @@ class RegisterBot():
         try:
             bot = Bot.objects.get(version=self.__version, name=self.__name)
             bot.save()
+            self.logger.info("Mise à jour du Robot %s dans la BDD,"
+                             " version %s",
+                             self.__name, self.__version)
             return
         except Bot.DoesNotExist:
             bot = Bot(version=self.__version,
@@ -62,6 +67,9 @@ class RegisterBot():
                       nb_iter=self.__nb_iter,
                       last_use=self.__last_use)
             bot.save()
+            self.logger.info(
+                "Enregistrement du Robot %s dans la BDD, version %s",
+                self.__name, self.__version)
 
     def __register_log_error(self):
         """
@@ -74,11 +82,15 @@ class RegisterBot():
             log = LogError.objects.get(path_to_log=self.__path_to_log_error)
             log.date = datetime.datetime.today()
             log.save()
+            self.logger.info("Update de l'objet LogError pour %s",
+                             self.__name)
             return log
         except LogError.DoesNotExist:
             log_error = LogError(date=datetime.datetime.today(),
                                  path_to_log=self.__path_to_log_error)
             log_error.save()
+            self.logger.info("Sauvegarde de l'objet LogError pour %s",
+                             self.__name)
             return log_error
 
     def __register_log_info(self):
@@ -92,9 +104,13 @@ class RegisterBot():
             log = LogInfo.objects.get(path_to_log=self.__path_to_log_info)
             log.date = datetime.datetime.today()
             log.save()
+            self.logger.info("Update de l'objet LogInfo pour %s",
+                             self.__name)
             return log
         except LogInfo.DoesNotExist:
             log_info = LogInfo(date=datetime.datetime.today(),
                                path_to_log=self.__path_to_log_info)
             log_info.save()
+            self.logger.info("Sauvegarde de l'objet LogInfo pour %s",
+                             self.__name)
             return log_info

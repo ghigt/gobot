@@ -33,7 +33,7 @@ from AdminBot.models import Episode, Show
 
 class Betaseries(BotBase):
     logging.config.fileConfig("../configuration.cfg")
-    log = logging.getLogger("BetaSeries")
+    log = logging.getLogger("BetaSerie")
 
     def __init__(self):
         BotBase.__init__(self)

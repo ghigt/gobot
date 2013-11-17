@@ -9,6 +9,7 @@ __status__ = "Development"
 
 import settings
 import logging
+import logging.config
 import requests
 from AdminBot.Bot import settings as globalsettings
 from AdminBot.Bot.Adress.AdressBetaSeries import AdressBetaseries
@@ -21,6 +22,7 @@ class Connexion:
                   (1, '://api.betaseries.com/shows/display?key='),
                   (2, '://api.betaseries.com/shows/episodes?key='))
 
+    logging.config.fileConfig("../configuration.cfg")
     log = logging.getLogger("BetaSeries")
     header = {'Accept': 'application/json',
               'user-agent': globalsettings.PROJECT_NAME_FOR_HTTP_HEADER}
