@@ -20,6 +20,7 @@ class BotBase():
     def get_info_for(self, value):
         raise NotImplementedError("Subclasses Should have implemented this")
 
+    @staticmethod
     def get_logger(self):
         raise NotImplementedError("Subclasses Should have implemented this")
 

@@ -49,6 +49,15 @@ class Betaseries(BotBase):
                           nb_iter=0, last_use=datetime.datetime.today())
 
     @staticmethod
+    def get_api_key():
+        """
+        Static Method
+        Allows to have API key for Betaserie API
+        :return: str() with API key
+        """
+        return settings.API_KEY_BETASERIE
+
+    @staticmethod
     def get_logger(self):
         """
         Static Method
@@ -195,15 +204,5 @@ class Betaseries(BotBase):
                 ep.save()
                 self.log.info("Episode Save")
                 return
-
-
-def get_api_key():
-    """
-    Static Method
-    Allows to have API key for Betaserie API
-    :return: str() with API key
-    """
-    return settings.API_KEY_BETASERIE
-
 
 Betaseries()
