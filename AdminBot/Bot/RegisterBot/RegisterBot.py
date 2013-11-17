@@ -30,7 +30,7 @@ class RegisterBot():
         :param nb_iter: 0 by default
         :param last_use: Date of today
         """
-        #logging.config.fileConfig("../configuration.cfg")
+
         logging.config.fileConfig("../configuration.cfg")
         self.logger = logging.getLogger("RegisterBot")
         self.__version = version
