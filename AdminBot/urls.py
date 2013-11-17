@@ -8,8 +8,5 @@ __status__ = "Development"
 from django.conf.urls import patterns, url
 
 urlpatterns = patterns('AdminBot.views',
-    # Examples:
-
-    url(r'^$', 'adminbot_main_page'),
-
-    )
+                       url(r'^$', 'adminbot_main_page'),
+                       )
