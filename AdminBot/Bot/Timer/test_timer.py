@@ -39,7 +39,7 @@ class TestTimer(TestCase):
 
     def test_get_seconds(self):
         self.timer.end_bot()
-        self.assertAlmostEquals(self.timer.get_seconds(), 30, delta=1)
+        self.assertAlmostEquals(self.timer.get_seconds(), 90, delta=1)
 
     def test_get_day(self):
         self.timer.end_bot()
