@@ -7,6 +7,7 @@ __email__ = "Alexandre.cloquet@gmail.com"
 __status__ = "Development"
 
 import datetime
+from AdminBot.Bot import settings
 import logging
 import logging.config
 from AdminBot.models import Bot, LogError, LogInfo
@@ -30,8 +31,7 @@ class RegisterBot():
         :param nb_iter: 0 by default
         :param last_use: Date of today
         """
-
-        logging.config.fileConfig("../configuration.cfg")
+        logging.config.fileConfig(settings.CONFIG_LOG)
         self.logger = logging.getLogger("RegisterBot")
         self.__version = version
         self.__actif = actif

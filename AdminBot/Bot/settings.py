@@ -7,7 +7,7 @@ __status__ = "Development"
 
 """All information for all robots
     We need to import all settings from all robots"""
-
+import os
 from AdminBot.Bot.Betaseries import settings as settings_betaserie
 
 #Generals Information
@@ -18,3 +18,4 @@ PROJECT_NAME_FOR_HTTP_HEADER = "SyliBot"
 API_KEY_BETASERIE = settings_betaserie.API_KEY_BETASERIE
 API_VERSION_BETASERIE = settings_betaserie.API_VERSION_BETASERIE
 HTTP_MODE = settings_betaserie.HTTP_MODE
+CONFIG_LOG= os.path.join(os.path.dirname(__file__),"configuration.cfg")
