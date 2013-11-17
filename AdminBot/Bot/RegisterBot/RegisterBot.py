@@ -29,15 +29,20 @@ class RegisterBot():
         self.name = name
         self.nb_iter = nb_iter
         self.last_use = last_use
-        self.register_bot()
+        self.__register_bot()
 
-    def register_bot(self):
-        log = self.register_log_info()
-        log_error = self.register_log_error()
+    def __register_bot(self):
+        """
+        Private method
+        Allow to register a bot in database
+        :return:
+        """
+        log = self.__register_log_info()
+        log_error = self.__register_log_error()
         try:
             bot = Bot.objects.get(version=self.version, name=self.name)
             bot.save()
-            return bot
+            return
         except Bot.DoesNotExist:
             bot = Bot(version=self.version,
                       actif=self.actif,
@@ -48,7 +53,12 @@ class RegisterBot():
                       last_use=self.last_use)
             bot.save()
 
-    def register_log_error(self):
+    def __register_log_error(self):
+        """
+        Private method
+        Allow to register a LogError in database
+        :return: LogError object
+        """
         try:
             log = LogError.objects.get(path_to_log=self.path_to_log_error)
             log.date = datetime.datetime.today()
@@ -60,7 +70,12 @@ class RegisterBot():
             log_error.save()
             return log_error
 
-    def register_log_info(self):
+    def __register_log_info(self):
+        """
+        Private method
+        Allow to register a LogInfo in database
+        :return: LogInfo object
+        """
         try:
             log = LogInfo.objects.get(path_to_log=self.path_to_log_info)
             log.date = datetime.datetime.today()
