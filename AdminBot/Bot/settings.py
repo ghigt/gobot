@@ -18,5 +18,4 @@ PROJECT_NAME_FOR_HTTP_HEADER = "SyliBot"
 API_KEY_BETASERIE = settings_betaserie.API_KEY_BETASERIE
 API_VERSION_BETASERIE = settings_betaserie.API_VERSION_BETASERIE
 HTTP_MODE = settings_betaserie.HTTP_MODE
-CONFIG_LOG= os.path.join(os.path.dirname(__file__), "configuration.cfg")
-
+CONFIG_LOG = os.path.join(os.path.dirname(__file__), "configuration.cfg")
