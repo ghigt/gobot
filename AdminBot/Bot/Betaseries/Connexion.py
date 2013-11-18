@@ -114,5 +114,3 @@ class Connexion:
             self.log.error("Connexion à BetaSeries : Status de la page = %d"
                            % r.status_code)
             return False
-
-Connexion().get_each_show("222")

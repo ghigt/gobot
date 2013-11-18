@@ -1,6 +1,9 @@
 from unittest import TestCase
 from Betaseries import Connexion
+from mock import *
 import time
+import requests
+from requests.exceptions import *
 
 __author__ = 'Alexandre Cloquet'
 __credits__ = ["Alexandre Cloquet"]
@@ -25,6 +28,7 @@ class TestConnexion(TestCase):
         assert self.show != Connexion().get_each_show("223")
         assert self.show != Connexion().get_each_show("500")
         assert self.show != Connexion().get_each_show("560")
+        assert self.show != Connexion().get_each_show("-1")
 
     def test_get_episode_from_id_show(self):
         assert self.episodes == Connexion().get_episode_from_id_show("666")
