@@ -104,7 +104,7 @@ class Betaseries(BotBase):
         ids = self.get_id_for_each_show()
         for idShow in ids:
             show = self.connexion.get_each_show(idShow)
-            if show != False and show is not None:
+            if show and show is not None:
                 self.deserialase_show(show)
         return
 
@@ -117,7 +117,7 @@ class Betaseries(BotBase):
         ids = self.get_id_for_each_show()
         for idShow in ids:
             episode = self.connexion.get_episode_from_id_show(idShow)
-            if episode != False and episode is not None:
+            if episode and episode is not None:
                 self.deserialase_episode(episode)
                 self.log.info(
                     "Création des épisode pour la série %s" % str(idShow))
