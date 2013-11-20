@@ -12,9 +12,9 @@ import logging
 import logging.config
 
 
-class DjangoRegisterBot():
+class DjangoManagerBot():
     logging.config.fileConfig(settings.CONFIG_LOG)
-    log = logging.getLogger("RegisterBot")
+    log = logging.getLogger("ManagerBot")
 
     def __init__(self):
         pass
