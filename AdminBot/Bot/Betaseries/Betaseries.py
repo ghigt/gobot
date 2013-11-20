@@ -8,7 +8,6 @@ __email__ = "Alexandre.cloquet@gmail.com"
 __status__ = "Development"
 
 import logging
-import re
 import logging.config
 import sys
 import os
@@ -209,5 +208,3 @@ class Betaseries(BotBase):
                 ep.save()
                 self.log.info("Episode Save")
                 return
-#
-#Betaseries()
