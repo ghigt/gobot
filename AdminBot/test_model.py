@@ -1,4 +1,4 @@
-from unittest import TestCase
+from django.test import TestCase
 
 __author__ = 'Alexandre Cloquet'
 __credits__ = ["Alexandre Cloquet"]
