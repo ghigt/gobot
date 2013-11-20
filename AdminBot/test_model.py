@@ -9,40 +9,40 @@ __status__ = "Development"
 
 
 class TestLog(TestCase):
-    pass
+    assert 1 == 1
 
 
 class TestLogError(TestCase):
-    pass
+    assert 1 == 1
 
 
 class TestLogInfo(TestCase):
-    pass
+    assert 1 == 1
 
 
 class TestBot(TestCase):
-    pass
+   assert 1 == 1
 
 
 class TestShow(TestCase):
-    pass
+    assert 1 == 1
 
 
 class TestEpisode(TestCase):
-    pass
+    assert 1 == 1
 
 
 class TestGenre(TestCase):
-    pass
+    assert 1 == 1
 
 
 class TestGenreToShow(TestCase):
-    pass
+    assert 1 == 1
 
 
 class TestMovie(TestCase):
-    pass
+    assert 1 == 1
 
 
 class TestGenreToMovie(TestCase):
-    pass
+    assert 1 == 1
