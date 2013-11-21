@@ -19,7 +19,8 @@ class DjangoManagerBot():
     def __init__(self):
         pass
 
-    def register_bot_in_db(self, bot_base):
-        bot_base.register_bot()
-        self.log.info("Le robot %s est enregistré dans Django", bot_base
-        .__class__.__name__)
+    def register_bot_in_db(self, bot_base=None):
+        if bot_base:
+            bot_base.register_bot()
+            self.log.info("Le robot %s est enregistré dans Django", bot_base
+            .__class__.__name__)
