@@ -16,13 +16,15 @@ class AdressBetaseries(AdressBase):
     def get_new_address(self):
         """
         Format new address to make a request http on it
-        @return: str() New address formated @raise KeyError: http not set, adress not set, api_key not set
+        @return: str() New address formated @raise KeyError: http not set,
+        adress not set, api_key not set
         """
         if self.http is None or self.address is None or self.api_key is None:
             raise KeyError("You must use get_new_adress_with_all_param")
         return '%s%s%s' % (self.http, self.address, self.api_key)
 
-    def get_new_address_with_all_param(self, api_key, address, http=settings.HTTP):
+    def get_new_address_with_all_param(self, api_key, address,
+                                       http=settings.HTTP_MODE):
         """
         Format new adress to make a request http on it with all parameters
         @param api_key: Need an Api key to login on server

@@ -8,7 +8,6 @@ __email__ = "Alexandre.cloquet@gmail.com"
 __status__ = "Development"
 
 import logging
-import re
 import logging.config
 import sys
 import os
@@ -16,30 +15,44 @@ from django.core.management import setup_environ
 import settings
 
 #For Alexandre
+
 sys.path.append('/home/nkio/PycharmProjects/DjangoBot/AdminBot/')
+sys.path.append("C:/Users/Nkio/PycharmProjects/DjangoBot/AdminBot/")
 #For server
 #sys.path.append(os.path.join(os.path.abspath('..'), '../../'))
 os.environ['DJANGO_SETTINGS_MODULE'] = 'DjangoBot.settings'
 
 setup_environ(settings)
+import datetime
+from AdminBot.Bot import settings as settingBot
+from AdminBot.Bot.RegisterBot.RegisterBot import RegisterBot
+from AdminBot.Bot.bot.BotBase import BotBase
 from Connexion import Connexion
 from AdminBot.models import Episode, Show
 
 
-class Betaseries:
-    logging.config.fileConfig("../configuration.cfg")
-    log = logging.getLogger("BetaSeries")
+class Betaseries(BotBase):
+    logging.config.fileConfig(settingBot.CONFIG_LOG)
+    log = logging.getLogger("BetaSerie")
 
     def __init__(self):
+        BotBase.__init__(self)
+        self.register_bot()
         self.connexion = Connexion(settings.HTTP_MODE)
-        self.get_info_for_each_episode()
+        self.get_info_for_each_show()
+        #self.get_info_for_each_episode()
 
-    @staticmethod
-    def get_api_key():
+    def register_bot(self):
+        bot = RegisterBot(version=0.01, actif=True,
+                          log_bot="BetaserieLogInfo.log",
+                          error_bot="BetaserieLogError.log", name="Betaserie",
+                          nb_iter=0, last_use=datetime.datetime.today())
+
+    def get_api_key(self):
         """
         Static Method
         Allows to have API key for Betaserie API
-        @return: str() with API key
+        :return: str() with API key
         """
         return settings.API_KEY_BETASERIE
 
@@ -47,14 +60,20 @@ class Betaseries:
         """
         Static Method
         Allows to have the logger for Betaserie API
-        @return: Logger
+        :return: Logger
         """
         return self.log
+
+    def get_info_for(self, value):
+        return super(Betaseries, self).get_info_for(value)
+
+    def search(self, value):
+        return super(Betaseries, self).search(value)
 
     def get_url_for_each_series(self):
         """
         Allows to have all url series for Betaserie API
-        @return: List(url) for every series
+        :return: List(url) for every series
         """
         list_url = []
         list_tmp = self.connexion.get_all_show()
@@ -66,7 +85,7 @@ class Betaseries:
     def get_id_for_each_show(self):
         """
         Allows to have all id series for Betaserie API
-        @return: List(id) for every series
+        :return: List(id) for every series
         """
         list_id = []
         list_tmp = self.connexion.get_all_show()
@@ -79,77 +98,57 @@ class Betaseries:
         """
         Get the Json file from series, and
         make an object for ORM Django
-        @return: Nothing in all case
+        :return: Nothing in all case
         """
         ids = self.get_id_for_each_show()
         for idShow in ids:
             show = self.connexion.get_each_show(idShow)
-            if show != False and show is not None:
+            if show and show is not None:
                 self.deserialase_show(show)
-                self.log.info("Création d'un show")
         return
 
     def get_info_for_each_episode(self):
         """
         Get the Json file from episode, and
         make an object for ORM Django
-        @return: Nothing in all case
+        :return: Nothing in all case
         """
         ids = self.get_id_for_each_show()
         for idShow in ids:
             episode = self.connexion.get_episode_from_id_show(idShow)
-            if episode != False and episode is not None:
+            if episode and episode is not None:
                 self.deserialase_episode(episode)
-                self.log.info("Création des épisode pour la série %s" % str(idShow))
+                self.log.info(
+                    "Création des épisode pour la série %s" % str(idShow))
         return
 
     def deserialase_show(self, obj):
         """
         Extract all data from the object and made an Show object
         for Database
-        @see: AdminBot/model.py
-        @param self: itself
-        @param obj: object from Json file from Betaserie API
-        @return: Nothing in all case
+        :see: AdminBot/model.py
+        :param self: itself
+        :param obj: object from Json file from Betaserie API
+        :return: Nothing in all case
         """
         if 'show' in obj:
             obj = obj['show']
             if len(obj['genres']) == 0:
                 obj['genres'] = "  "
-            p = Show(thetvdb_id=obj['thetvdb_id'],
-                     imdb_id=obj['imdb_id'],
-                     title=obj['title'],
-                     description=re.escape(obj['description']),
-                     seasons=obj['seasons'],
-                     nbepisode=obj['episodes'],
-                     follower=obj['followers'],
-                     comment=obj['comments'],
-                     similars=obj['similars'],
-                     characters=obj['characters'],
-                     creation=obj['creation'],
-                     genre=obj['genres'][0],
-                     lenght=obj['length'],
-                     status=obj['status'],
-                     language=obj['language'],
-                     idbetaserie=obj['id'])
             try:
-                x = Show.objects.get(title=obj['title'], creation=obj['creation'])
-            except Show.DoesNotExist:
-                p.save()
-                self.log.info("Show Save")
+                x = Show.objects.get(title=obj['title'],
+                                     creation=obj['creation'],
+                                     seasons=obj['seasons'])
+                x.save()
+                self.log.info("Show Update")
                 return
-            else:
-                p = Show(id=x.id,
-                         thetvdb_id=obj['thetvdb_id'],
+            except Show.DoesNotExist:
+                p = Show(thetvdb_id=obj['thetvdb_id'],
                          imdb_id=obj['imdb_id'],
                          title=obj['title'],
                          description=obj['description'],
                          seasons=obj['seasons'],
                          nbepisode=obj['episodes'],
-                         follower=obj['followers'],
-                         comment=obj['comments'],
-                         similars=obj['similars'],
-                         characters=obj['characters'],
                          creation=obj['creation'],
                          genre=obj['genres'][0],
                          lenght=obj['length'],
@@ -157,7 +156,7 @@ class Betaseries:
                          language=obj['language'],
                          idbetaserie=obj['id'])
                 p.save()
-                self.log.info("Show Update")
+                self.log.info("Show Save")
         else:
             self.log.error("Erreur à la déserialisation")
         return
@@ -166,19 +165,21 @@ class Betaseries:
         """
         Extract all data from the object and made an Episode object
         for Database
-        @see: AdminBot/model.py
-        @param self: itself
-        @param objs: object from Json file from Betaserie API
-        @return: Nothing in all case
+        :see: AdminBot/model.py
+        :param self: itself
+        :param objs: object from Json file from Betaserie API
+        :return: Nothing in all case
         """
-        show = None
         for obj in objs:
             try:
-                show = Show.objects.get(title=obj['show_title'], idbetaserie=obj['show_id'])
+                Show.objects.get(
+                    title=obj['show_title'], idbetaserie=obj['show_id'])
             except Show.DoesNotExist:
-                self.deserialase_show(Connexion('http').get_each_show(obj['show_id']))
-            finally:
-                show = Show.objects.get(title=obj['show_title'], idbetaserie=obj['show_id'])
+                self.deserialase_show(
+                    Connexion('http').get_each_show(obj['show_id']))
+            else:
+                self.show = Show.objects.get(title=obj['show_title'],
+                                             idbetaserie=obj['show_id'])
                 ep = Episode(title=obj['title'],
                              season=obj['season'],
                              episode=obj['episode'],
@@ -187,16 +188,15 @@ class Betaseries:
                              code=obj['code'],
                              description=obj['description'],
                              date=obj['date'])
-                ep.show_id = show.id
+                ep.show_id = self.show.id
             try:
-                x = Episode.objects.get(title=obj['title'], show_title=obj['show_title'])
-            except Episode.DoesNotExist:
-                ep.save()
-                self.log.info("Episode Save")
+                x = Episode.objects.get(title=obj['title'],
+                                        show_title=obj['show_title'])
+                x.save()
+                self.log.info("Episode Update")
                 return
-            finally:
-                ep = Episode(id=x.id,
-                             title=obj['title'],
+            except Episode.DoesNotExist:
+                ep = Episode(title=obj['title'],
                              season=obj['season'],
                              episode=obj['episode'],
                              showid=obj['show_id'],
@@ -204,9 +204,8 @@ class Betaseries:
                              code=obj['code'],
                              description=obj['description'],
                              date=obj['date'])
-                ep.show_id = show.id
+                ep.show_id = self.show.id
                 ep.save()
-                self.log.info("Episode Update")
+                self.log.info("Episode Save")
                 return
-
-Betaseries()
+#Betaseries()

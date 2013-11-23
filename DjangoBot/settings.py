@@ -1,5 +1,5 @@
 # Django settings for DjangoBot project.
-
+import os
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -7,27 +7,36 @@ ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
 
+LOGIN_URL = '/login/'
+
 MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'testbot',                      # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        #'NAME': "data.db",
+        'NAME': os.path.join(os.path.dirname(__file__),"data.db"),
+        # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
     },
-    'server': {
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'testbot',                      # Or path to database file if using sqlite3.
-        # The following settings are not used with sqlite3:
-        'USER': 'root',
-        'PASSWORD': 'bjtu2013sylimysql',
-        'HOST': '62.210.193.26',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
-    }
+    #'test': {
+    #    'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+    #    'NAME': 'testbot',                      # Or path to database file if using sqlite3.
+    #    # The following settings are not used with sqlite3:
+    #    'USER': 'root',
+    #    'PASSWORD': 'root',
+    #    'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+    #    'PORT': '',                      # Set to empty string for default.
+    #},
+    #'server': {
+    #    'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+    #    'NAME': 'testbot',                      # Or path to database file if using sqlite3.
+    #    # The following settings are not used with sqlite3:
+    #    'USER': 'root',
+    #    'PASSWORD': 'bjtu2013sylimysql',
+    #    'HOST': '62.210.193.26',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+    #    'PORT': '',                      # Set to empty string for default.
+    #}
 }
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
@@ -38,11 +47,11 @@ ALLOWED_HOSTS = []
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'Europe/Paris'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fr-FR'
 
 SITE_ID = 1
 
@@ -101,12 +110,26 @@ TEMPLATE_LOADERS = (
 #     'django.template.loaders.eggs.Loader',
 )
 
+DEBUG_TOOLBAR_PANELS = (
+    'debug_toolbar.panels.version.VersionDebugPanel',
+    'debug_toolbar.panels.timer.TimerDebugPanel',
+    'debug_toolbar.panels.settings_vars.SettingsVarsDebugPanel',
+    'debug_toolbar.panels.headers.HeaderDebugPanel',
+    'debug_toolbar.panels.request_vars.RequestVarsDebugPanel',
+    'debug_toolbar.panels.template.TemplateDebugPanel',
+    'debug_toolbar.panels.sql.SQLDebugPanel',
+    'debug_toolbar.panels.signals.SignalDebugPanel',
+    'debug_toolbar.panels.logger.LoggingPanel',
+)
+INTERNAL_IPS = ('127.0.0.1',)
+
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -127,9 +150,26 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
+    'bootstrap_admin',
     'django.contrib.admin',
+    'bootstrap_toolkit',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
+    'AdminBot',
+    'debug_toolbar',
+    'django_jenkins',
+)
+
+JENKINS_TASKS = (
+    'django_jenkins.tasks.with_coverage',
+    'django_jenkins.tasks.dir_tests',
+    'django_jenkins.tasks.run_pylint',
+    'django_jenkins.tasks.run_pep8',
+    'django_jenkins.tasks.run_pyflakes',
+    'django_jenkins.tasks.django_tests',
+)
+
+PROJECT_APPS = (
     'AdminBot',
 )
 

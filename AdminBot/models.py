@@ -2,6 +2,37 @@ from django.db import models
 
 # Create your models here.
 
+
+class Log(models.Model):
+    date = models.DateField()
+    path_to_log = models.CharField(max_length=500)
+
+    class Meta:
+        abstract = True
+
+
+class LogError(Log):
+    error = models.BooleanField(default=True)
+
+
+class LogInfo(Log):
+    error = models.BooleanField(default=False)
+
+
+class Bot(models.Model):
+    version = models.CharField(max_length=10)
+    actif = models.BooleanField(default=True)
+    log_bot = models.ForeignKey(LogInfo)
+    error_bot = models.ForeignKey(LogError)
+    name = models.CharField(max_length=100, db_index=True)
+    nb_iter = models.PositiveIntegerField()
+    last_use = models.DateTimeField()
+    launch_time = models.DateTimeField(null=True, blank=True)
+    elapsed_time = models.CharField(null=True, blank=True, max_length=200)
+
+    def __unicode__(self):
+        return u'%s - %s' % (self.name, self.version)
+
 # Debut Model Bot
 
 
@@ -12,10 +43,6 @@ class Show(models.Model):
     description = models.TextField()
     seasons = models.PositiveIntegerField()
     nbepisode = models.PositiveIntegerField()
-    follower = models.PositiveIntegerField()
-    comment = models.CharField(max_length=500)
-    similars = models.CharField(max_length=200)
-    characters = models.CharField(max_length=500)
     creation = models.CharField(max_length=4)
     genre = models.CharField(max_length=50)
     lenght = models.PositiveIntegerField()
@@ -54,3 +81,18 @@ class GenreToShow(models.Model):
     id_show = models.ForeignKey(Show)
 
 # Fin Model Bot
+
+# Debut du model Movie
+
+
+class Movie(models.Model):
+    title = models.CharField(db_index=True, max_length=500)
+    id_tvdb = models.PositiveIntegerField()
+    description = models.TextField()
+    dateOnAir = models.DateField()
+    genre = models.ForeignKey("GenreToMovie")
+
+
+class GenreToMovie(models.Model):
+    id_genre = models.ForeignKey(Genre)
+    id_movie = models.ForeignKey(Movie)

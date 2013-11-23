@@ -10,19 +10,12 @@ if __name__ == "__main__":
 
     os.system('mysql --user=root --password=root -e"DROP DATABASE IF EXISTS testbot"')
     os.system('mysql --user=root --password=root -e"CREATE DATABASE testbot CHARACTER SET utf8"')
-
+    os.system('rm data.db')
     # For server
     #os.system('mysql --user=root --password=bjtu2013sylimysql -e"DROP DATABASE IF EXISTS testbot"')
     #os.system('mysql --user=root --password=bjtu2013sylimysql -e"CREATE DATABASE testbot CHARACTER SET utf8"')
     # Run the syncdb
     management.call_command('syncdb', interactive=False)
+    management.call_command('loaddata', "user.json")
 
-    # Create the super user and sets his password.
-    from django.contrib.auth.models import User
-
-    u = User(username='admin')
-    u.set_password('password')
-    u.is_superuser = True
-    u.is_staff = True
-    u.save()
     execute_from_command_line(sys.argv)

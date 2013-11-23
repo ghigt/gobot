@@ -10,6 +10,13 @@ __all__ = {"InvalidInfoBot", "IdAlreadyUse"}
 
 class InvalidInfoBot(Exception):
     """Invalid information from Bot"""
+    def __init__(self, s, f=""):
+        Exception.__init__(self, s)
+        self.s = s
+        self.func = f
+
+    def __str__(self):
+        return "Invalid information for " + self.func + " with " + self.s
 
 
 class IdAlreadyUse(Exception):
