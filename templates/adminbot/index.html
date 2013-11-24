@@ -1,5 +1,16 @@
 {% extends "base.html" %}
 
 {% load bootstrap_toolkit %}
-
+{% block content %}
 <p>Bienvenue sur l'administration des bots </p>
+{% if latest_poll_list %}
+<ul>
+    {% for bot in robots %}
+    <li>{{ bot.name }}</li>
+    <!--7       <p><a href="{% url "blog.views.lire" article.id %}">Lire la suite</a>-->
+    {% endfor %}
+</ul>
+{% else %}
+    <p>Aucun robot n'est enregistré. Voulez vous en <a href="{% url 'AdminBot.views.botRegister' %}">enregistrer</a> ?</p>
+{% endif %}
+{% endblock %}

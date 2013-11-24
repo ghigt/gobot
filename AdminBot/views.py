@@ -3,10 +3,13 @@ from django.http import HttpResponse
 import datetime
 
 from django.http import *
-from django.shortcuts import render_to_response, redirect
-from django.template import RequestContext
+from django.shortcuts import render_to_response, render
+from django.template import RequestContext, Context, loader
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from AdminBot.models import Bot
+from AdminBot.DjangoManagerBot.DjangoManagerBot import DjangoManagerBot
+from AdminBot.Bot.settings import REGISTER_BOTS as register_bot
 
 
 def main_page(request):
@@ -39,18 +42,17 @@ def logout_page(request):
 
 @login_required
 def adminbot_main_page(request):
-    """
-    If users are authenticated, direct them to the main page. Otherwise, take
-    them to the login page.
-    """
-    return render_to_response('adminbot/index.html')
+    if request.user.is_authenticated():
+        t = loader.get_template('adminbot/index.html')
+        context = Context({'robots': Bot.objects.all(),})
+        print "coucou"
+        return HttpResponse(t.render(context))
+        #return render(request, 'adminbot/index.html', context)
+    #return render_to_response('adminbot/index.html')
 
-
-def hello(request):
-    return HttpResponse("Hello world")
-
-
-def current_datetime(request):
-    now = datetime.datetime.now()
-    html = "<html><body>It is now %s.</body></html>" % now
-    return HttpResponse(html)
+@login_required
+def botRegister(request):
+    registerbot = DjangoManagerBot()
+    t = loader.get_template('adminbot/registerBot.html')
+    context = Context({'list_robot': register_bot, 'robots': Bot.objects.all()})
+    return HttpResponse(t.render(context))

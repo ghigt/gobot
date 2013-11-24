@@ -9,4 +9,5 @@ from django.conf.urls import patterns, url
 
 urlpatterns = patterns('AdminBot.views',
                        url(r'^$', 'adminbot_main_page'),
+                       url(r'^botRegister/$', 'botRegister'),
                        )
