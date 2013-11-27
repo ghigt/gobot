@@ -46,14 +46,16 @@ def adminbot_main_page(request):
     if request.user.is_authenticated():
         t = loader.get_template('adminbot/index.html')
         robots = Bot.objects.all()
-        context = Context({'robots': robots,})
+        context = Context({'robots': robots, })
         return HttpResponse(t.render(context))
+
 
 @login_required
 def botRegister(request):
     t = loader.get_template('adminbot/registerBot.html')
     context = RequestContext(request, {'list_robot': register_bot})
     return HttpResponse(t.render(context))
+
 
 @login_required
 def savebot(request):
