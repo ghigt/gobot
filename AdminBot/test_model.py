@@ -21,7 +21,7 @@ class TestLogInfo(TestCase):
 
 
 class TestBot(TestCase):
-   assert 1 == 1
+    assert 1 == 1
 
 
 class TestShow(TestCase):
