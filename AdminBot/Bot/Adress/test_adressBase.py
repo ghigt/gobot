@@ -20,7 +20,7 @@ class TestAdressBase(TestCase):
 
     def test_set_http(self):
         self.adresse.set_http("HTTP")
-        self.assertEqual(self.adresse.http, "HTTP", "")
+        self.assertEqual(self.adresse.get_http(), "HTTP", "")
 
     def test_get_api_key(self):
         self.assertEqual(self.adresse.get_api_key(),
@@ -28,11 +28,11 @@ class TestAdressBase(TestCase):
 
     def test_set_api_key(self):
         self.adresse.set_api_key("test")
-        self.assertEqual(self.adresse.api_key, "test", "")
+        self.assertEqual(self.adresse.get_api_key(), "test", "")
 
     def test_get_adress(self):
         self.assertEqual(self.adresse.get_adress(), "://test", "")
 
     def test_set_adress(self):
         self.adresse.set_adress("://Je suis un test")
-        self.assertEqual(self.adresse.address, "://Je suis un test", "")
+        self.assertEqual(self.adresse.get_adress(), "://Je suis un test", "")
