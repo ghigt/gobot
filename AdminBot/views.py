@@ -10,6 +10,7 @@ from django.contrib.auth import authenticate, login, logout
 from AdminBot.models import Bot
 from AdminBot.DjangoManagerBot.DjangoManagerBot import DjangoManagerBot
 from AdminBot.Bot.settings import REGISTER_BOTS as register_bot
+import time
 
 
 def main_page(request):
@@ -44,15 +45,19 @@ def logout_page(request):
 def adminbot_main_page(request):
     if request.user.is_authenticated():
         t = loader.get_template('adminbot/index.html')
-        context = Context({'robots': Bot.objects.all(),})
-        print "coucou"
+        robots = Bot.objects.all()
+        context = Context({'robots': robots,})
         return HttpResponse(t.render(context))
-        #return render(request, 'adminbot/index.html', context)
-    #return render_to_response('adminbot/index.html')
 
 @login_required
 def botRegister(request):
-    registerbot = DjangoManagerBot()
     t = loader.get_template('adminbot/registerBot.html')
-    context = Context({'list_robot': register_bot, 'robots': Bot.objects.all()})
+    context = RequestContext(request, {'list_robot': register_bot})
     return HttpResponse(t.render(context))
+
+@login_required
+def savebot(request):
+    register_bot = DjangoManagerBot()
+    register_bot.register_bot_in_db(request.POST['bot'])
+    time.sleep(3)
+    return render_to_response('adminbot/index.html')

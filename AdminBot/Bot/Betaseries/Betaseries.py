@@ -16,13 +16,13 @@ import settings
 
 #For Alexandre
 
-sys.path.append('/home/nkio/PycharmProjects/DjangoBot/AdminBot/')
-sys.path.append("C:/Users/Nkio/PycharmProjects/DjangoBot/AdminBot/")
-#For server
-#sys.path.append(os.path.join(os.path.abspath('..'), '../../'))
-os.environ['DJANGO_SETTINGS_MODULE'] = 'DjangoBot.settings'
-
-setup_environ(settings)
+#sys.path.append('/home/nkio/PycharmProjects/DjangoBot/AdminBot/')
+#sys.path.append("C:/Users/Nkio/PycharmProjects/DjangoBot/AdminBot/")
+##For server
+##sys.path.append(os.path.join(os.path.abspath('..'), '../../'))
+#os.environ['DJANGO_SETTINGS_MODULE'] = 'DjangoBot.settings'
+#
+#setup_environ(settings)
 import datetime
 from AdminBot.Bot import settings as settingBot
 from AdminBot.Bot.RegisterBot.RegisterBot import RegisterBot
@@ -37,12 +37,15 @@ class Betaseries(BotBase):
 
     def __init__(self):
         BotBase.__init__(self)
-        self.register_bot()
+        #self.register_bot()
         self.connexion = Connexion(settings.HTTP_MODE)
-        self.get_info_for_each_show()
+        #self.get_info_for_each_show()
         #self.get_info_for_each_episode()
 
     def register_bot(self):
+        """
+        Allow to register Betaserie Bot in database
+        """
         bot = RegisterBot(version=0.01, actif=True,
                           log_bot="BetaserieLogInfo.log",
                           error_bot="BetaserieLogError.log", name="Betaserie",
