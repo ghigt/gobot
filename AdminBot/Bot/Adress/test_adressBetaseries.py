@@ -12,14 +12,14 @@ __status__ = "Development"
 
 class TestAdressBetaseries(TestCase):
     def setUp(self):
-        self.adressbeta = AdressBetaseries(
+        self.adress_beta = AdressBetaseries(
             settings.HTTP_MODE, settings.API_KEY_BETASERIE, "://test")
 
     def test_get_new_address(self):
         """
         Allow to verify if the real adress is return
         """
-        self.assertEqual(self.adressbeta.get_new_address(),
+        self.assertEqual(self.adress_beta.get_new_address(),
                          "https://test3e803b0b5556")
         with self.assertRaises(KeyError):
             AdressBetaseries().get_new_address()
@@ -28,8 +28,9 @@ class TestAdressBetaseries(TestCase):
         """
         Allow to verify if the real adress is return
         """
-        self.assertEqual(self.adressbeta.get_new_address_with_all_param(
+        assert self.adress_beta.get_new_address_with_all_param(
             settings.API_KEY_BETASERIE,
-            "://test",
-            settings.HTTP_MODE),
-            "https://test3e803b0b5556")
+            "://test", settings.HTTP_MODE) == "https://test3e803b0b5556"
+        assert self.adress_beta.get_new_address_with_all_param(
+            settings.API_KEY_BETASERIE,
+            "://test", settings.HTTP_MODE) != "https://test4e803b0b5556"
