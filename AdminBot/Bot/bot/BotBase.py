@@ -33,3 +33,7 @@ class BotBase(object):
     @abc.abstractmethod
     def register_bot(self):
         raise NotImplementedError("Subclasses Should have implemented this")
+
+    @abc.abstractmethod
+    def get_method(self):
+        raise NotImplementedError("Subclasses Should have implemented this")

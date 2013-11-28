@@ -9,8 +9,8 @@
                 <li>{{ bot.name }}</li>
             {% endfor %}
         </ul>
-        <p>Voulez vous en <a href="{% url 'AdminBot.views.botRegister' %}">enregistrer</a> un autre ?</p>
+        <p>Voulez vous en <a href="{% url 'AdminBot.views.bot_register' %}">enregistrer</a> un autre ?</p>
     {% else %}
-        <p>Aucun robot n'est enregistré. Voulez vous en <a href="{% url 'AdminBot.views.botRegister' %}">enregistrer</a> ?</p>
+        <p>Aucun robot n'est enregistré. Voulez vous en <a href="{% url 'AdminBot.views.bot_register' %}">enregistrer</a> ?</p>
     {% endif %}
 {% endblock %}

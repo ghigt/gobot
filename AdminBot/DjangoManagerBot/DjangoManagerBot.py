@@ -26,5 +26,5 @@ class DjangoManagerBot():
         if bot_base:
             bot = self.RobotDict[bot_base]()
             bot.register_bot()
-            self.log.info("Le robot %s est enregistré dans Django", bot
-            .__class__.__name__)
+            self.log.info("Le robot %s est enregistré dans Django",
+                          bot.__class__.__name__)

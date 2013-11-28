@@ -211,3 +211,13 @@ class Betaseries(BotBase):
                 ep.save()
                 self.log.info("Episode Save")
                 return
+
+    def get_method(self):
+        """
+        Allows to have all method from the bot
+
+        :return: List of all method
+        """
+        return 'search', 'get_info_for', 'get_url_for_each_series', \
+               'get_id_for_each_show', 'get_info_for_each_show', \
+               'get_info_for_each_episode'

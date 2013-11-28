@@ -9,6 +9,6 @@ from django.conf.urls import patterns, url
 
 urlpatterns = patterns('AdminBot.views',
                        url(r'^$', 'adminbot_main_page'),
-                       url(r'^botRegister/$', 'botRegister'),
-                       url(r'^botRegister/savebot$', 'savebot'),
+                       url(r'^botRegister/$', 'bot_register'),
+                       url(r'^botRegister/savebot$', 'save_bot'),
                        )

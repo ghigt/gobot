@@ -14,7 +14,7 @@ import time
 
 
 def main_page(request):
-    return render_to_response('index.html')
+    return render_to_response('index.html', RequestContext(request))
 
 
 def login_user(request):
@@ -51,15 +51,25 @@ def adminbot_main_page(request):
 
 
 @login_required
-def botRegister(request):
+def bot_register(request):
     t = loader.get_template('adminbot/registerBot.html')
-    context = RequestContext(request, {'list_robot': register_bot})
+    robots = Bot.objects.all()
+    tmp = list()
+    for bot_static in register_bot:
+        for bot in robots:
+            if bot_static in bot.name:
+                pass
+            else:
+                tmp.append(bot_static)
+    context = RequestContext(request, {'list_robot': tmp})
     return HttpResponse(t.render(context))
 
 
 @login_required
-def savebot(request):
+def save_bot(request):
     register_bot = DjangoManagerBot()
-    register_bot.register_bot_in_db(request.POST['bot'])
+    bot = request.POST['bot']
+    register_bot.register_bot_in_db(bot)
     time.sleep(3)
-    return render_to_response('adminbot/index.html')
+    return render_to_response(bot + '.html', context_instance=RequestContext(
+        request))
