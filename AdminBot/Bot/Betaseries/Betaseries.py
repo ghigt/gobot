@@ -11,7 +11,7 @@ import logging
 import logging.config
 import sys
 import os
-from django.core.management import setup_environ
+#from django.core.management import setup_environ
 import settings
 
 #For Alexandre
@@ -23,6 +23,13 @@ import settings
 #os.environ['DJANGO_SETTINGS_MODULE'] = 'DjangoBot.settings'
 #
 #setup_environ(settings)
+
+#For Alain
+
+sys.path.append('/home/alaundo/bot/DjangoBot/AdminBot/')
+sys.path.append(os.path.join(os.path.abspath('..'), '../../'))
+os.environ['DJANGO_SETTINGS_MODULE'] = 'DjangoBot.settings'
+
 import datetime
 from AdminBot.Bot import settings as settingBot
 from AdminBot.Bot.RegisterBot.RegisterBot import RegisterBot
@@ -37,10 +44,10 @@ class Betaseries(BotBase):
 
     def __init__(self):
         BotBase.__init__(self)
-        #self.register_bot()
+        self.register_bot()
         self.connexion = Connexion(settings.HTTP_MODE)
-        #self.get_info_for_each_show()
-        #self.get_info_for_each_episode()
+        self.get_info_for_each_show()
+        self.get_info_for_each_episode()
 
     def register_bot(self):
         """

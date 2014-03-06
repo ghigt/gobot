@@ -96,3 +96,75 @@ class Movie(models.Model):
 class GenreToMovie(models.Model):
     id_genre = models.ForeignKey(Genre)
     id_movie = models.ForeignKey(Movie)
+
+# Fin du model Movie
+
+# Debut du model Music
+
+class Album(models.Model):
+    id_album = models.IntegerField(db_index = True)
+    title = models.CharField(max_length=45)
+    link = models.CharField(max_length=100)
+    cover = models.CharField(max_length=100)
+    nb_tracks = models.IntegerField()
+    duration = models.IntegerField()
+    fans = models.IntegerField()
+    rating = models.IntegerField()
+    release_date = models.DateField()
+    available = models.BooleanField(default=False)
+    artist = models.CharField(max_length=45)
+
+    def __unicode__(self):
+        return self.title
+
+
+class Music(models.Model):
+    id_music = models.IntegerField(db_index = True)
+    title = models.CharField(max_length=45)
+    link = models.CharField(max_length=100)
+    duration = models.IntegerField()
+    rank = models.IntegerField()
+    preview_link = models.CharField(max_length=100)
+    artist = models.CharField(max_length=45)
+
+    def __unicode__(self):
+        return self.title
+
+
+class Track(models.Model):
+    id_track = models.IntegerField(db_index = True)
+    album = models.ForeignKey(Album)
+    music = models.ForeignKey(Music)
+    position = models.IntegerField()
+
+# Fin du model Music
+
+# Debut du model Manga/Anime
+
+class Anime(models.Model):
+    id_anime = models.IntegerField(db_index = True)
+    english_title = models.CharField(max_length=45)
+    japanese_title = models.CharField(max_length=45)
+    image_url = models.CharField(max_length=100)
+    type_anime = models.CharField(max_length=45)
+    number_episodes = models.IntegerField()
+    start_date = models.DateField()
+    end_date = models.DateField()
+    description = models.CharField(max_length=500)
+    status = models.CharField(max_length=45)
+    id_myanimelist = models.IntegerField()
+
+class Manga(models.Model):
+    id_manga = models.IntegerField(db_index = True)
+    english_title = models.CharField(max_length=45)
+    japanese_title = models.CharField(max_length=45)
+    image_url = models.CharField(max_length=100)
+    type_anime = models.CharField(max_length=45)
+    number_chapters = models.IntegerField()
+    number_volumes = models.IntegerField()
+    start_date = models.DateField()
+    end_date = models.DateField()
+    description = models.CharField(max_length=500)
+    status = models.CharField(max_length=45)
+    id_myanimelist = models.IntegerField()
+

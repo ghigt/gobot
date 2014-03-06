@@ -18,6 +18,7 @@ class DjangoManagerBot():
     log = logging.getLogger("ManagerBot")
     RobotDict = dict()
     RobotDict["Betaserie"] = Betaseries
+#    RobotDict["Deezer"] = Deezer
 
     def __init__(self):
         pass

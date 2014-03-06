@@ -9,6 +9,7 @@ __status__ = "Development"
     We need to import all settings from all robots"""
 import os
 from AdminBot.Bot.Betaseries import settings as settings_betaserie
+from AdminBot.Bot.Deezer import settings as settings_deezer
 
 #Generals Information
 
@@ -20,3 +21,7 @@ API_VERSION_BETASERIE = settings_betaserie.API_VERSION_BETASERIE
 HTTP_MODE = settings_betaserie.HTTP_MODE
 CONFIG_LOG = os.path.join(os.path.dirname(__file__), "configuration.cfg")
 REGISTER_BOTS = ('Betaserie', 'Deezer')
+
+#Informations for Deezer's Bot
+#API_KEY_DEEZER = settings_deezer.API_KEY_DEEZER
+#API_VERSION_DEEZER = settings_deezer.API_VERSION_DEEZER

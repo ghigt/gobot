@@ -46,3 +46,21 @@ class TestMovie(TestCase):
 
 class TestGenreToMovie(TestCase):
     assert 1 == 1
+
+
+class TestAlbum(TestCase):
+    assert 1 == 1
+
+class TestMusic(TestCase):
+    assert 1 == 1
+
+class TestTrack(TestCase):
+    assert 1 == 1
+
+
+class TestAnime(TestCase):
+    assert 1 == 1
+
+
+class TestManga(TestCase):
+    assert 1 == 1

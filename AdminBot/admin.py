@@ -7,7 +7,7 @@ __status__ = "Development"
 
 
 from django.contrib import admin
-from AdminBot.models import Show, Episode, Genre, Bot, LogInfo, LogError
+from AdminBot.models import Show, Episode, Genre, Bot, LogInfo, LogError, Album, Music, Track, Anime, Manga
 
 admin.site.register(Show)
 admin.site.register(Episode)
@@ -15,3 +15,8 @@ admin.site.register(Genre)
 admin.site.register(Bot)
 admin.site.register(LogInfo)
 admin.site.register(LogError)
+admin.site.register(Album)
+admin.site.register(Music)
+admin.site.register(Track)
+admin.site.register(Anime)
+admin.site.register(Manga)
