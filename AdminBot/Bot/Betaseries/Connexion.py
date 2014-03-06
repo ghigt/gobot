@@ -10,7 +10,7 @@ __status__ = "Development"
 import settings
 import logging
 import logging.config
-import requests
+#import requests
 from AdminBot.Bot import settings as globalsettings
 from AdminBot.Bot.Adress.AdressBetaSeries import AdressBetaseries
 
