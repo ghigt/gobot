@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% load bootstrap_toolkit %}
+{% block content %}
+    <p>Liste des Robots pouvant être enregistré </p>
+    {% if list_robot %}
+        <form class="form-{{ layout }} well" method="post" action="savebot">
+            {% csrf_token %}
+            {% for bot in list_robot %}
+                <div class="radio">
+                    <p class="form-actions">
+                        <label>
+                            <input type="radio" name="bot" id="bot"value="{{ bot }}"
+                                    /> {{ bot }}
+                        </label>
+                    </p>
+                </div>
+            {% endfor %}
+            <input type="submit" value="Enregistrer" class="btn btn-primary"
+                   formaction="savebot">
+        </form>
+    {% else %}
+        <p class="error">Désolé aucun robot n'est listé</p>
+    {% endif %}
+{% endblock %}

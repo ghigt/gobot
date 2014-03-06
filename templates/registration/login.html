@@ -9,7 +9,7 @@
     <div class="container">
         <div class="row">
             <div class="offset4 span4">
-                <form class="form-{{ layout }} well"  method="post">
+                <form class="form-{{ layout }} well" method="post">
                     {% csrf_token %}
                     <fieldset>
 
@@ -18,10 +18,12 @@
 
                         <!-- Text input-->
                         <div class="control-group">
-                            <label class="control-label" for="username">Login</label>
+                            <label class="control-label"
+                                   for="username">Login</label>
 
                             <div class="controls">
-                                <input id="username" name="username" placeholder="Login" class="input-xlarge"
+                                <input id="username" name="username"
+                                       placeholder="Login" class="input-xlarge"
                                        type="text">
                             </div>
                         </div>
@@ -31,18 +33,21 @@
                             <label class="control-label" for="password">Password</label>
 
                             <div class="controls">
-                                <input id="password" name="password" placeholder="Password"
+                                <input id="password" name="password"
+                                       placeholder="Password"
                                        class="input-xlarge" type="password">
                             </div>
                         </div>
 
                         <!-- Button (Double) -->
-       {% if next %}
-        <input type="hidden" name="next" value="{{ next }}" />
-      {% else %}
-        <input type="hidden" name="next" value="/adminbot/" />
-      {% endif %}
-      <input type="submit" value="login" />
+                        {% if next %}
+                            <input type="hidden" name="next"
+                                   value="{{ next }}"/>
+                        {% else %}
+                            <input type="hidden" name="next"
+                                   value="/adminbot/"/>
+                        {% endif %}
+                        <input type="submit" value="login"/>
 
                     </fieldset>
                 </form>

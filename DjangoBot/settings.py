@@ -4,7 +4,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+     ('Alexandre Cloquet', 'Alexandre.cloquet+adminBot@gmail.com'),
 )
 
 LOGIN_URL = '/login/'
@@ -14,8 +14,8 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        #'NAME': "data.db",
-        'NAME': os.path.join(os.path.dirname(__file__),"data.db"),
+        'NAME': "data.db",
+        #'NAME': os.path.join(os.path.dirname(__file__),"data.db"),
         # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
     },

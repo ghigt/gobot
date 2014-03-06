@@ -16,23 +16,34 @@ class TestAdressBase(TestCase):
                                   settings.API_KEY_BETASERIE, "://test")
 
     def test_get_http(self):
-        self.assertEqual(self.adresse.http, "https", "")
+        """
+        Testing get http from AdressBase
+        """
+        assert self.adresse.get_http() == "https", "Should be https"
+        assert self.adresse.get_http() != "http", "Should be different of " \
+                                                  "http"
 
     def test_set_http(self):
-        self.adresse.http = "HTTP"
-        self.assertEqual(self.adresse.http, "HTTP", "")
+        self.adresse.set_http("HTTP")
+        self.assertEqual(self.adresse.get_http(), "HTTP", "")
+        self.assertNotEqual(self.adresse.get_http(), "http")
 
     def test_get_api_key(self):
-        self.assertEqual(self.adresse.api_key,
+        self.assertEqual(self.adresse.get_api_key(),
                          settings.API_KEY_BETASERIE, "")
+        self.assertNotEqual(self.adresse.get_api_key(), "test", "")
 
     def test_set_api_key(self):
-        self.adresse.api_key = "test"
-        self.assertEqual(self.adresse.api_key, "test", "")
+        self.adresse.set_api_key("test")
+        self.assertEqual(self.adresse.get_api_key(), "test", "")
+        self.assertNotEqual(self.adresse.get_api_key(), "NOTTEST", "")
 
     def test_get_adress(self):
-        self.assertEqual(self.adresse.address, "://test", "")
+        self.assertEqual(self.adresse.get_adress(), "://test", "")
+        self.assertNotEqual(self.adresse.get_adress(), "://test11", "")
 
     def test_set_adress(self):
-        self.adresse.address = "://Je suis un test"
-        self.assertEqual(self.adresse.address, "://Je suis un test", "")
+        self.adresse.set_adress("://Je suis un test")
+        self.assertEqual(self.adresse.get_adress(), "://Je suis un test", "")
+        self.assertNotEqual(self.adresse.get_adress(), "://Je suis un test "
+                                                       "negatif", "")
