@@ -8,26 +8,27 @@ __email__ = "alaincariou.p@gmail.com"
 __status__ = "Development"
 
 
-class TestMyAnimeList(TestCase):
-    def connect_to_api(self):
-        pass
+class TestTheTVDB(TestCase):
 
     def test_register_bot(self):
         pass
 
-    def test_get_all_anime(self):
+    def test_get_all_series(self):
         pass
 
-    def test_get_all_manga(self):
+    def test_check_seasons(self):
+        pass
+
+    def test_get_all_episodes(self):
         pass
 
     def test_get_logger(self):
         pass
 
-    def test_deserialase_anime(self):
+    def test_deserialase_serie(self):
         pass
 
-    def test_deserialase_manga(self):
+    def test_deserialase_episode(self):
         pass
 
     def test_get_method(self):

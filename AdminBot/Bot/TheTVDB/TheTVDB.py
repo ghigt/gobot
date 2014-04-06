@@ -106,7 +106,7 @@ class TheTVDB():#BotBase):
     def get_all_episodes(self, seasonid):
         """
         Get a text response for the search for episodes in TheTVDB and call 
-        the method deserialise_episode to set them in the database
+        the method deserialase_episode to set them in the database
         :return: nothing
         """
         i = 1
