@@ -28,11 +28,11 @@ type Interests struct {
 }
 
 type Movie struct {
-	Title		string `json:"title"`
-	Poster		string `json:"poster"`
-	Director	string `json:"director"`
-	Synopsis	string `json:"synopsis"`
-	Type		string `json:"type"`
+	Title    string `json:"title"`
+	Poster   string `json:"poster"`
+	Director string `json:"director"`
+	Synopsis string `json:"synopsis"`
+	Type     string `json:"type"`
 }
 
 func fetchSeries(s string) []*Serie {
@@ -109,10 +109,10 @@ func fetchMovies(s string) []*Movie {
 
 	var d struct {
 		Data []struct {
-			Title  		string `json:"title"`
-			Poster		string `json:"poster"`
-			Director 	string `json:"director"`
-			Synopsis	string `json:"synopsis"`
+			Title    string `json:"title"`
+			Poster   string `json:"poster"`
+			Director string `json:"director"`
+			Synopsis string `json:"synopsis"`
 		} `json:"movies"`
 	}
 
@@ -125,11 +125,11 @@ func fetchMovies(s string) []*Movie {
 	ms := []*Movie{}
 	for _, data := range d.Data {
 		m := &Movie{
-			Title:  	data.Title,
-			Poster:		data.Poster,
-			Director:	data.Director,
-			Synopsis:	data.Synopsis,
-			Type:   "Movie",
+			Title:    data.Title,
+			Poster:   data.Poster,
+			Director: data.Director,
+			Synopsis: data.Synopsis,
+			Type:     "Movie",
 		}
 		ms = append(ms, m)
 	}
