@@ -24,6 +24,15 @@ type Music struct {
 type Interests struct {
 	Series []*Serie `json:"series"`
 	Musics []*Music `json:"musics"`
+	Movies []*Movie `json:"movies"`
+}
+
+type Movie struct {
+	Title		string `json:"title"`
+	Poster		string `json:"poster"`
+	Director	string `json:"director"`
+	Synopsis	string `json:"synopsis"`
+	Type		string `json:"type"`
 }
 
 func fetchSeries(s string) []*Serie {
@@ -90,6 +99,44 @@ func fetchMusics(s string) []*Music {
 	return ms
 }
 
+func fetchMovies(s string) []*Movie {
+	res, err := http.Get("https://api.betaseries.com/movies/search?key=3e803b0b5556&nbpp=100&title=" + s)
+	if err != nil {
+		log.Println("Error:", err)
+		return nil
+	}
+	defer res.Body.Close()
+
+	var d struct {
+		Data []struct {
+			Title  		string `json:"title"`
+			Poster		string `json:"poster"`
+			Director 	string `json:"director"`
+			Synopsis	string `json:"synopsis"`
+		} `json:"movies"`
+	}
+
+	err = json.NewDecoder(res.Body).Decode(&d)
+	if err != nil {
+		log.Println("Error:", err)
+		return nil
+	}
+
+	ms := []*Movie{}
+	for _, data := range d.Data {
+		m := &Movie{
+			Title:  	data.Title,
+			Poster:		data.Poster,
+			Director:	data.Director,
+			Synopsis:	data.Synopsis,
+			Type:   "Movie",
+		}
+		ms = append(ms, m)
+	}
+
+	return ms
+}
+
 func handleInterests(w http.ResponseWriter, r *http.Request) {
 	s := r.URL.Query().Get("search")
 	if s == "" {
@@ -104,9 +151,14 @@ func handleInterests(w http.ResponseWriter, r *http.Request) {
 	if musics == nil {
 		musics = []*Music{}
 	}
+	movies := fetchMovies(s)
+	if movies == nil {
+		movies = []*Movie{}
+	}
 	ints := &Interests{
 		Series: series,
 		Musics: musics,
+		Movies: movies,
 	}
 	data, err := json.Marshal(ints)
 	if err != nil {
