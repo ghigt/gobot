@@ -5,6 +5,7 @@ import (
 	"encoding/xml"
 	"log"
 	"net/http"
+	"net/url"
 )
 
 type Serie struct {
@@ -36,7 +37,7 @@ type Movie struct {
 }
 
 func fetchSeries(s string) []*Serie {
-	res, err := http.Get("http://thetvdb.com/api/GetSeries.php?seriesname=" + s)
+	res, err := http.Get("http://thetvdb.com/api/GetSeries.php?seriesname=" + url.QueryEscape(s))
 	if err != nil {
 		log.Println("Error:", err)
 		return nil
@@ -60,7 +61,7 @@ func fetchSeries(s string) []*Serie {
 }
 
 func fetchMusics(s string) []*Music {
-	res, err := http.Get("http://api.deezer.com/search?q=" + s)
+	res, err := http.Get("http://api.deezer.com/search?q=" + url.QueryEscape(s))
 	if err != nil {
 		log.Println("Error:", err)
 		return nil
@@ -100,9 +101,9 @@ func fetchMusics(s string) []*Music {
 }
 
 func fetchMovies(s string) []*Movie {
-	res, err := http.Get("https://api.betaseries.com/movies/search?key=3e803b0b5556&nbpp=100&title=" + s)
+	res, err := http.Get("https://api.betaseries.com/movies/search?key=3e803b0b5556&nbpp=100&title=" + url.QueryEscape(s))
 	if err != nil {
-		log.Println("Error:", err)
+		log.Println("FetchMovies Error:", err)
 		return nil
 	}
 	defer res.Body.Close()
@@ -118,7 +119,7 @@ func fetchMovies(s string) []*Movie {
 
 	err = json.NewDecoder(res.Body).Decode(&d)
 	if err != nil {
-		log.Println("Error:", err)
+		log.Println("FetchMovies Error:", err)
 		return nil
 	}
 
@@ -162,7 +163,7 @@ func handleInterests(w http.ResponseWriter, r *http.Request) {
 	}
 	data, err := json.Marshal(ints)
 	if err != nil {
-		log.Println("Error:", err)
+		log.Println("handler Error:", err)
 		return
 	}
 	w.Header().Set("content-type", "application/json; charset=utf-8")
