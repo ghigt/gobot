@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"encoding/xml"
+	"io/ioutil"
 	"log"
 	"net/http"
 )
@@ -25,14 +26,48 @@ type Interests struct {
 	Series []*Serie `json:"series"`
 	Musics []*Music `json:"musics"`
 	Movies []*Movie `json:"movies"`
+	Books  []*Book  `json:"books"`
 }
 
 type Movie struct {
-	Title		string `json:"title"`
-	Poster		string `json:"poster"`
-	Director	string `json:"director"`
-	Synopsis	string `json:"synopsis"`
-	Type		string `json:"type"`
+	Title    string `json:"title"`
+	Poster   string `json:"poster"`
+	Director string `json:"director"`
+	Synopsis string `json:"synopsis"`
+	Type     string `json:"type"`
+}
+
+type Book struct {
+	Title     string `xml:"search>results>work>best_book>title" json:"title"`
+	Author    string `xml:"search>results>work>best_book>author>name" json:"author"`
+	Image_url string `xml:"search>results>work>best_book>image_url" json:"image_url"`
+	Type      string `json:"type"`
+}
+
+func fetchBooks(s string) []*Book {
+	res, err := http.Get("https://www.goodreads.com/search.xml?key=1ED3NcURFpQFZvnMxM4ZNA&field=title&q=" + s)
+	if err != nil {
+		log.Println("Error:", err)
+		return nil
+	}
+	body, err := ioutil.ReadAll(res.Body)
+	defer res.Body.Close()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var d struct {
+		b []*Book
+	}
+
+	err = xml.Unmarshal([]byte(body), &d.b)
+	if err != nil {
+		log.Fatal(err)
+	}
+	for i := range d.b {
+		d.b[i].Type = "Book"
+	}
+	return d.b
 }
 
 func fetchSeries(s string) []*Serie {
@@ -109,10 +144,10 @@ func fetchMovies(s string) []*Movie {
 
 	var d struct {
 		Data []struct {
-			Title  		string `json:"title"`
-			Poster		string `json:"poster"`
-			Director 	string `json:"director"`
-			Synopsis	string `json:"synopsis"`
+			Title    string `json:"title"`
+			Poster   string `json:"poster"`
+			Director string `json:"director"`
+			Synopsis string `json:"synopsis"`
 		} `json:"movies"`
 	}
 
@@ -125,11 +160,11 @@ func fetchMovies(s string) []*Movie {
 	ms := []*Movie{}
 	for _, data := range d.Data {
 		m := &Movie{
-			Title:  	data.Title,
-			Poster:		data.Poster,
-			Director:	data.Director,
-			Synopsis:	data.Synopsis,
-			Type:   "Movie",
+			Title:    data.Title,
+			Poster:   data.Poster,
+			Director: data.Director,
+			Synopsis: data.Synopsis,
+			Type:     "Movie",
 		}
 		ms = append(ms, m)
 	}
@@ -155,10 +190,15 @@ func handleInterests(w http.ResponseWriter, r *http.Request) {
 	if movies == nil {
 		movies = []*Movie{}
 	}
+	books := fetchBooks(s)
+	if books == nil {
+		books = []*Book{}
+	}
 	ints := &Interests{
 		Series: series,
 		Musics: musics,
 		Movies: movies,
+		Books:  books,
 	}
 	data, err := json.Marshal(ints)
 	if err != nil {
