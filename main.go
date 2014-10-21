@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"encoding/xml"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
@@ -39,36 +38,33 @@ type Movie struct {
 }
 
 type Book struct {
-	Title     string `xml:"search>results>work>best_book>title" json:"title"`
-	Author    string `xml:"search>results>work>best_book>author>name" json:"author"`
-	Image_url string `xml:"search>results>work>best_book>image_url" json:"image_url"`
+	Title     string `xml:"best_book>title" json:"title"`
+	Author    string `xml:"best_book>author>name" json:"author"`
+	Image_url string `xml:"best_book>image_url" json:"imageurl"`
 	Type      string `json:"type"`
 }
 
 func fetchBooks(s string) []*Book {
-	res, err := http.Get("https://www.goodreads.com/search.xml?key=1ED3NcURFpQFZvnMxM4ZNA&field=title&q=" + s)
+	res, err := http.Get("https://www.goodreads.com/search.xml?key=1ED3NcURFpQFZvnMxM4ZNA&field=title&q=" + url.QueryEscape(s))
 	if err != nil {
 		log.Println("Error:", err)
 		return nil
 	}
-	body, err := ioutil.ReadAll(res.Body)
 	defer res.Body.Close()
-	if err != nil {
-		log.Fatal(err)
-	}
 
 	var d struct {
-		b []*Book
+		Books []*Book `xml:"search>results>work"`
 	}
 
-	err = xml.Unmarshal([]byte(body), &d.b)
+	err = xml.NewDecoder(res.Body).Decode(&d)
 	if err != nil {
-		log.Fatal(err)
+		log.Println("Error:", err)
+		return nil
 	}
-	for i := range d.b {
-		d.b[i].Type = "Book"
+	for i := range d.Books {
+		d.Books[i].Type = "Book"
 	}
-	return d.b
+	return d.Books
 }
 
 func fetchSeries(s string) []*Serie {
