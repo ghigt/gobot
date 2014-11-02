@@ -169,6 +169,54 @@ func fetchMovies(s string) []*Movie {
 	return ms
 }
 
+func getSearch(r *http.Request) string {
+	s := r.URL.Query().Get("search")
+	if s == "" {
+		log.Println("Nothing to search")
+		return ""
+	}
+	return s
+}
+
+func sendJSON(f interface{}, w http.ResponseWriter) {
+	data, err := json.Marshal(f)
+	if err != nil {
+		log.Println("handler Error:", err)
+		return
+	}
+	w.Header().Set("content-type", "application/json; charset=utf-8")
+	_, err = w.Write(data)
+}
+
+func handleMovies(w http.ResponseWriter, r *http.Request) {
+	data := fetchMovies(getSearch(r))
+	if data == nil {
+		data = []*Movie{}
+	}
+	sendJSON(data, w)
+}
+func handleBooks(w http.ResponseWriter, r *http.Request) {
+	data := fetchBooks(getSearch(r))
+	if data == nil {
+		data = []*Book{}
+	}
+	sendJSON(data, w)
+}
+func handleMusics(w http.ResponseWriter, r *http.Request) {
+	data := fetchMusics(getSearch(r))
+	if data == nil {
+		data = []*Music{}
+	}
+	sendJSON(data, w)
+}
+func handleSeries(w http.ResponseWriter, r *http.Request) {
+	data := fetchSeries(getSearch(r))
+	if data == nil {
+		data = []*Serie{}
+	}
+	sendJSON(data, w)
+}
+
 func handleInterests(w http.ResponseWriter, r *http.Request) {
 	s := r.URL.Query().Get("search")
 	if s == "" {
@@ -208,5 +256,9 @@ func handleInterests(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	http.HandleFunc("/api/interests", handleInterests)
+	http.HandleFunc("/api/books", handleBooks)
+	http.HandleFunc("/api/series", handleSeries)
+	http.HandleFunc("/api/musics", handleMusics)
+	http.HandleFunc("/api/movies", handleMovies)
 	http.ListenAndServe(":8000", nil)
 }
