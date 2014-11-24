@@ -1,6 +1,11 @@
 
-FROM busybox:ubuntu-14.04
+FROM debian:7.7
 MAINTAINER Ghislain Guiot
+
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update
+RUN apt-get install -y ca-certificates
 
 ADD bot /bot
 

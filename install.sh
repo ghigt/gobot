@@ -7,4 +7,4 @@ echo ">> docker building..."
 docker build -t ghigt-bot .
 
 echo ">> done"
-echo ">> you can now run \`docker run -d -p 7890:8000 ghigt-bot\`"
+echo ">> you can now run \`docker run -d -p 7890:8000 --name ghigt-bot ghigt-bot\`"
