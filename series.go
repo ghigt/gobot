@@ -13,7 +13,7 @@ type Serie struct {
 	Pid         int    `json:"pid"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
-	ImageUrl    string `json:"imageurl"`
+	ImageUrl    string `json:"imageurl,omitempty"`
 	Type        string `json:"type"`
 }
 
