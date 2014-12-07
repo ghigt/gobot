@@ -75,6 +75,7 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/api/interests", handleInterests)
 	r.HandleFunc("/api/books", handleBooks)
+	r.HandleFunc("/api/books/{pid:[0-9]+}", getBook)
 	r.HandleFunc("/api/series", handleSeries)
 	r.HandleFunc("/api/series/{pid:[0-9]+}", getSerie)
 	r.HandleFunc("/api/musics", handleMusics)
