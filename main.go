@@ -80,5 +80,6 @@ func main() {
 	r.HandleFunc("/api/series/{pid:[0-9]+}", getSerie)
 	r.HandleFunc("/api/musics", handleMusics)
 	r.HandleFunc("/api/movies", handleMovies)
+	r.HandleFunc("/api/movies/{pid:[0-9]+}", getMovie)
 	http.ListenAndServe(":8000", r)
 }

@@ -5,14 +5,47 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+
+	"github.com/gorilla/mux"
 )
 
 type Movie struct {
-	Title    string `json:"title"`
-	Poster   string `json:"poster"`
-	Director string `json:"director"`
-	Synopsis string `json:"synopsis"`
-	Type     string `json:"type"`
+	Pid         int    `json:"pid"`
+	Title       string `json:"title"`
+	ImageUrl    string `json:"imageurl,omitempty"`
+	Description string `json:"description"`
+	Type        string `json:"type"`
+}
+
+func getMovie(w http.ResponseWriter, r *http.Request) {
+	pid := mux.Vars(r)["pid"]
+	res, err := http.Get("https://api.betaseries.com/movies/movie?key=3e803b0b5556&nbpp=100&id=" + pid)
+	if err != nil {
+		log.Println("fetchSeries Error:", err)
+		return
+	}
+	defer res.Body.Close()
+
+	var d struct {
+		Movie struct {
+			Id          int    `json:"id"`
+			Title       string `json:"title"`
+			Description string `json:"synopsis"`
+			ImageUrl    string `json:"poster"`
+		} `json:"movie"`
+	}
+	err = json.NewDecoder(res.Body).Decode(&d)
+	if err != nil {
+		log.Println("fetchSeries Error:", err)
+		return
+	}
+	sendJSON(&Movie{
+		Pid:         d.Movie.Id,
+		Title:       d.Movie.Title,
+		Description: d.Movie.Description,
+		ImageUrl:    d.Movie.ImageUrl,
+		Type:        "Movie",
+	}, w)
 }
 
 func fetchMovies(s string) []*Movie {
@@ -25,10 +58,11 @@ func fetchMovies(s string) []*Movie {
 
 	var d struct {
 		Data []struct {
-			Title    string `json:"title"`
-			Poster   string `json:"poster"`
-			Director string `json:"director"`
-			Synopsis string `json:"synopsis"`
+			Id          int    `json:"id"`
+			Title       string `json:"title"`
+			Poster      string `json:"poster"`
+			Director    string `json:"director"`
+			Description string `json:"synopsis"`
 		} `json:"movies"`
 	}
 
@@ -41,11 +75,10 @@ func fetchMovies(s string) []*Movie {
 	ms := []*Movie{}
 	for _, data := range d.Data {
 		m := &Movie{
-			Title:    data.Title,
-			Poster:   data.Poster,
-			Director: data.Director,
-			Synopsis: data.Synopsis,
-			Type:     "Movie",
+			Pid:         data.Id,
+			Title:       data.Title,
+			Description: data.Description,
+			Type:        "Movie",
 		}
 		ms = append(ms, m)
 	}
