@@ -21,7 +21,7 @@ func getMovie(w http.ResponseWriter, r *http.Request) {
 	pid := mux.Vars(r)["pid"]
 	res, err := http.Get("https://api.betaseries.com/movies/movie?key=3e803b0b5556&nbpp=100&id=" + pid)
 	if err != nil {
-		log.Println("fetchSeries Error:", err)
+		log.Println("getMovie Error:", err)
 		return
 	}
 	defer res.Body.Close()
@@ -36,7 +36,7 @@ func getMovie(w http.ResponseWriter, r *http.Request) {
 	}
 	err = json.NewDecoder(res.Body).Decode(&d)
 	if err != nil {
-		log.Println("fetchSeries Error:", err)
+		log.Println("getMovie Error:", err)
 		return
 	}
 	sendJSON(&Movie{
