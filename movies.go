@@ -15,6 +15,7 @@ type Movie struct {
 	ImageUrl    string `json:"imageurl,omitempty"`
 	Description string `json:"description"`
 	Type        string `json:"type"`
+	Info
 }
 
 func getMovie(w http.ResponseWriter, r *http.Request) {
@@ -32,6 +33,7 @@ func getMovie(w http.ResponseWriter, r *http.Request) {
 			Title       string `json:"title"`
 			Description string `json:"synopsis"`
 			ImageUrl    string `json:"poster"`
+			Imdb        string `json:"imdb_id"`
 		} `json:"movie"`
 	}
 	err = json.NewDecoder(res.Body).Decode(&d)
@@ -39,11 +41,27 @@ func getMovie(w http.ResponseWriter, r *http.Request) {
 		log.Println("getMovie Error:", err)
 		return
 	}
+	res, err = http.Get("http://www.omdbapi.com/?i=" + d.Movie.Imdb + "&plot=full&r=json")
+	if err != nil {
+		log.Println("omdapi Error:", err)
+		return
+	}
+	defer res.Body.Close()
+
+	var omd struct {
+		Info
+	}
+	err = json.NewDecoder(res.Body).Decode(&omd)
+	if err != nil {
+		log.Println("fetchSeries Error:", err)
+		return
+	}
 	sendJSON(&Movie{
 		Pid:         d.Movie.Id,
 		Title:       d.Movie.Title,
 		Description: d.Movie.Description,
 		ImageUrl:    d.Movie.ImageUrl,
+		Info:        omd.Info,
 		Type:        "Movie",
 	}, w)
 }

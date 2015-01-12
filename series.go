@@ -9,12 +9,20 @@ import (
 	"github.com/gorilla/mux"
 )
 
+type Info struct {
+	Genre    string
+	Director string
+	Writer   string
+	Actors   string
+}
+
 type Serie struct {
 	Pid         int    `json:"pid"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	ImageUrl    string `json:"imageurl,omitempty"`
 	Type        string `json:"type"`
+	Info
 }
 
 func getSerie(w http.ResponseWriter, r *http.Request) {
@@ -48,9 +56,25 @@ func getSerie(w http.ResponseWriter, r *http.Request) {
 			Id          int    `json:"id"`
 			Title       string `json:"title"`
 			Description string `json:"description"`
-		} `json:"show"`
+			Imdb        string `json:"imdb_id"`
+		}
 	}
 	err = json.NewDecoder(res.Body).Decode(&s)
+	if err != nil {
+		log.Println("fetchSeries Error:", err)
+		return
+	}
+	res, err = http.Get("http://www.omdbapi.com/?i=" + s.Show.Imdb + "&plot=full&r=json")
+	if err != nil {
+		log.Println("omdapi Error:", err)
+		return
+	}
+	defer res.Body.Close()
+
+	var omd struct {
+		Info
+	}
+	err = json.NewDecoder(res.Body).Decode(&omd)
 	if err != nil {
 		log.Println("fetchSeries Error:", err)
 		return
@@ -60,6 +84,7 @@ func getSerie(w http.ResponseWriter, r *http.Request) {
 		Title:       s.Show.Title,
 		Description: s.Show.Description,
 		ImageUrl:    pic.Pictures[0].Url,
+		Info:        omd.Info,
 		Type:        "Serie",
 	}, w)
 }
