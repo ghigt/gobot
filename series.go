@@ -10,10 +10,10 @@ import (
 )
 
 type Info struct {
-	Genre    string
-	Director string
-	Writer   string
-	Actors   string
+	Genre    string `json:"Genre,omitempty"`
+	Director string `json:"Director,omitempty"`
+	Writer   string `json:"Writer,omitempty"`
+	Actors   string `json:"Actors,omitempty"`
 }
 
 type Serie struct {
