@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"strconv"
 
 	"github.com/gorilla/mux"
 )
@@ -116,6 +117,7 @@ func fetchSeries(s string) []*Serie {
 			Pid:         data.Id,
 			Title:       data.Title,
 			Description: data.Description,
+			ImageUrl:    "https://api.betaseries.com/pictures/shows?key=3e803b0b5556&nbpp=100&id=" + strconv.Itoa(data.Id),
 			Type:        "Serie",
 		}
 		ss = append(ss, s)

@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"strconv"
 
 	"github.com/gorilla/mux"
 )
@@ -96,6 +97,7 @@ func fetchMovies(s string) []*Movie {
 			Pid:         data.Id,
 			Title:       data.Title,
 			Description: data.Description,
+			ImageUrl:    "https://api.betaseries.com/pictures/movies?key=3e803b0b5556&nbpp=100&id=" + strconv.Itoa(data.Id),
 			Type:        "Movie",
 		}
 		ms = append(ms, m)
