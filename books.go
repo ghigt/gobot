@@ -10,7 +10,7 @@ import (
 )
 
 type Book struct {
-	Pid         int    `xml:"id" json:"id"`
+	Pid         int    `xml:"id" json:"pid"`
 	Title       string `xml:"best_book>title" json:"title"`
 	ImageUrl    string `xml:"best_book>image_url" json:"imageurl"`
 	Description string `xml:"best_book>description" json:"description"`
